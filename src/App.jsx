@@ -28,11 +28,7 @@ function App() {
 
 
 
-const Contact = () => {
-  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
 
-  
-};
 
   const benefits = [
     {

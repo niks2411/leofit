@@ -110,11 +110,7 @@ const Programs = () => {
     }
   ];
 
-const Contact = () => {
-  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
 
-  
-};
 
 
 

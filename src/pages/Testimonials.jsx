@@ -67,11 +67,7 @@ const Testimonials = () => {
   ];
 
 
- const Contact = () => {
-   console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
  
-   
- }; 
   // Auto-scroll functionality
   useEffect(() => {
     if (!isAutoPlaying) return;

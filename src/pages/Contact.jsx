@@ -23,11 +23,7 @@ const Contact = () => {
     'Fitness Challenges',
     'Custom Program'
   ];
-const Contact = () => {
-  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
 
-  
-};
   const contactInfo = [
     {
       icon: Phone,

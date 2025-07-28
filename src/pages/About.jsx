@@ -29,11 +29,7 @@ const About = () => {
       icon: Award
     }
   ];
-const Contact = () => {
-  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
 
-  
-};
   const team = [
     {
       name: 'Sarah Johnson',
