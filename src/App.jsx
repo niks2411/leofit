@@ -4,23 +4,26 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Heart, Users, TrendingUp, Shield, Zap, Award, X } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Testimonials from './pages/Testimonials';
+import Programs from './pages/Programs';
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
   
   useEffect(() => {
-  const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
 
-  if (!hasSeenPopup) {
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-      localStorage.setItem('hasSeenPopup', 'true');
-    }, 3000);
+    if (!hasSeenPopup) {
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+        localStorage.setItem('hasSeenPopup', 'true');
+      }, 3000);
 
-    return () => clearTimeout(timer);
-  }
-}, []);
-
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const benefits = [
     {
@@ -286,9 +289,11 @@ function App() {
               </>
             } />
             
-            {/* Add other routes here */}
-            <Route path="/programs" element={<div>Programs Page</div>} />
-            <Route path="/contact" element={<div>Contact Page</div>} />
+            {/* Added page routes */}
+            <Route path="/about" element={<About />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/programs" element={<Programs />} />
           </Routes>
         </main>
 
