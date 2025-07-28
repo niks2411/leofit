@@ -9,11 +9,18 @@ function App() {
   const [showPopup, setShowPopup] = useState(false);
   
   useEffect(() => {
+  const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+
+  if (!hasSeenPopup) {
     const timer = setTimeout(() => {
       setShowPopup(true);
+      localStorage.setItem('hasSeenPopup', 'true');
     }, 3000);
+
     return () => clearTimeout(timer);
-  }, []);
+  }
+}, []);
+
 
   const benefits = [
     {
