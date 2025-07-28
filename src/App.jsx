@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion as motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Heart, Users, TrendingUp, Shield, Zap, Award, X } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
@@ -24,6 +24,15 @@ function App() {
       return () => clearTimeout(timer);
     }
   }, []);
+
+
+
+
+const Contact = () => {
+  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
+
+  
+};
 
   const benefits = [
     {

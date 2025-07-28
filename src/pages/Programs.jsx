@@ -110,6 +110,14 @@ const Programs = () => {
     }
   ];
 
+const Contact = () => {
+  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
+
+  
+};
+
+
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

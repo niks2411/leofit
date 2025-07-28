@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion , AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Users, Award } from 'lucide-react';
 
 const Contact = () => {
@@ -23,7 +23,11 @@ const Contact = () => {
     'Fitness Challenges',
     'Custom Program'
   ];
+const Contact = () => {
+  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
 
+  
+};
   const contactInfo = [
     {
       icon: Phone,

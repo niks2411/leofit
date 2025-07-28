@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion  } from 'framer-motion';
 import { Heart, Target, Eye, Users, Award, Star, Calendar, TrendingUp } from 'lucide-react';
 
 const About = () => {
@@ -29,7 +29,11 @@ const About = () => {
       icon: Award
     }
   ];
+const Contact = () => {
+  console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
 
+  
+};
   const team = [
     {
       name: 'Sarah Johnson',

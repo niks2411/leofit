@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion , AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 
 const Testimonials = () => {
@@ -66,6 +66,12 @@ const Testimonials = () => {
     { number: '4.9/5', label: 'Average Rating' }
   ];
 
+
+ const Contact = () => {
+   console.log(typeof motion, typeof AnimatePresence); //Temporaryyyyyy
+ 
+   
+ }; 
   // Auto-scroll functionality
   useEffect(() => {
     if (!isAutoPlaying) return;
