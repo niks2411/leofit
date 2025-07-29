@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import Testimonials from './pages/Testimonials';
+import Location from './pages/Location';
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -150,11 +150,18 @@ function App() {
     }
   };
 
+  const navItems = [
+    { path: '/', label: 'Home' },
+    { path: '/about', label: 'About' },
+    { path: '/location', label: 'Location' },
+    { path: '/contact', label: 'Contact' }
+  ];
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-900 flex flex-col">
         {/* Navbar */}
-        <Navbar />
+        <Navbar navItems={navItems} />
         
         {/* Main Content */}
         <main className="flex-grow">
@@ -192,18 +199,18 @@ function App() {
                       transition={{ duration: 0.8, delay: 0.6 }}
                       className="flex flex-col sm:flex-row gap-4 justify-center items-center"
                     >
-                      <motion.button
+                        <motion.button
                         onClick={scrollToPrograms}
-                        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.3)" }}
-                        whileTap={{ scale: 0.95 }}
-                        className="group relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-2xl transition-all duration-500"
-                      >
-                        <span className="relative z-10 flex items-center">
-                          Explore Programs
-                          <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                        </span>
-                        <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-orange-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                      </motion.button>
+                          whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.3)" }}
+                          whileTap={{ scale: 0.95 }}
+                          className="group relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-2xl transition-all duration-500"
+                        >
+                          <span className="relative z-10 flex items-center">
+                            Explore Programs
+                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                          </span>
+                          <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-orange-500 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                        </motion.button>
                       
                       <Link to="/contact">
                         <motion.button
@@ -354,7 +361,7 @@ function App() {
             {/* Other page routes */}
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/location" element={<Location />} />
           </Routes>
         </main>
 
