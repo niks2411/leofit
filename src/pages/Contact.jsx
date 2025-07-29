@@ -28,7 +28,7 @@ const Contact = () => {
     {
       icon: Phone,
       title: 'Phone',
-      info: '+1 (555) 123-4567',
+      info: '+91 91662 45953',
       subtitle: 'Mon-Fri 9AM-6PM'
     },
     {
@@ -40,7 +40,7 @@ const Contact = () => {
     {
       icon: MapPin,
       title: 'Office',
-      info: '123 Wellness Street, Health City, HC 12345',
+      info: '5N/44A, Bk Chowk, Block N, NIT 5, Near Btw, BK Chowk-121001',
       subtitle: 'Visit us anytime'
     }
   ];
@@ -114,7 +114,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen pt-24 bg-gray-900">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-orange-500/10"></div>
@@ -125,13 +125,13 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               Get In{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Touch
               </span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Ready to transform your workplace wellness? Let's start the conversation 
               and create a healthier, more productive work environment for your team.
             </p>
@@ -140,7 +140,7 @@ const Contact = () => {
       </section>
 
       {/* Contact Form & Info */}
-      <section className="py-20 bg-white dark:bg-gray-800">
+      <section className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
@@ -151,10 +151,10 @@ const Contact = () => {
               viewport={{ once: true }}
             >
               <motion.div variants={itemVariants} className="mb-8">
-                <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+                <h2 className="text-3xl font-bold mb-6 text-white">
                   Send us a message
                 </h2>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-gray-300">
                   Fill out the form below and we'll get back to you within 24 hours.
                 </p>
               </motion.div>
@@ -168,13 +168,13 @@ const Contact = () => {
                         id="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="name"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.name ? '-0.5rem' : '0.75rem',
                           fontSize: formData.name ? '0.875rem' : '1rem',
@@ -191,13 +191,13 @@ const Contact = () => {
                         id="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="email"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.email ? '-0.5rem' : '0.75rem',
                           fontSize: formData.email ? '0.875rem' : '1rem',
@@ -216,13 +216,13 @@ const Contact = () => {
                         id="company"
                         value={formData.company}
                         onChange={(e) => handleInputChange('company', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="company"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.company ? '-0.5rem' : '0.75rem',
                           fontSize: formData.company ? '0.875rem' : '1rem',
@@ -239,12 +239,12 @@ const Contact = () => {
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                       />
                       <label
                         htmlFor="phone"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.phone ? '-0.5rem' : '0.75rem',
                           fontSize: formData.phone ? '0.875rem' : '1rem',
@@ -261,7 +261,7 @@ const Contact = () => {
                       id="program"
                       value={formData.program}
                       onChange={(e) => handleInputChange('program', e.target.value)}
-                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none focus:scale-105"
+                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105"
                       required
                     >
                       <option value="">Select a program</option>
@@ -279,13 +279,13 @@ const Contact = () => {
                       value={formData.message}
                       onChange={(e) => handleInputChange('message', e.target.value)}
                       rows={5}
-                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-white dark:bg-gray-700 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer resize-none"
+                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer resize-none"
                       placeholder=" "
                       required
                     />
                     <label
                       htmlFor="message"
-                      className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-2 rounded"
+                      className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                       style={{
                         top: formData.message ? '-0.5rem' : '0.75rem',
                         fontSize: formData.message ? '0.875rem' : '1rem',
@@ -333,7 +333,7 @@ const Contact = () => {
               className="space-y-8"
             >
               <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold mb-8 text-gray-900 dark:text-white">
+                <h3 className="text-2xl font-bold mb-8 text-white">
                   Contact Information
                 </h3>
                 <div className="space-y-6">
@@ -343,19 +343,19 @@ const Contact = () => {
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300"
+                      className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-300"
                     >
                       <div className="flex-shrink-0 p-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg">
                         <contact.icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h4 className="font-semibold mb-1 text-gray-900 dark:text-white">
+                        <h4 className="font-semibold mb-1 text-white">
                           {contact.title}
                         </h4>
-                        <p className="text-gray-600 dark:text-gray-300 mb-1">
+                        <p className="text-gray-300 mb-1">
                           {contact.info}
                         </p>
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <p className="text-sm text-gray-400">
                           {contact.subtitle}
                         </p>
                       </div>
@@ -366,7 +366,7 @@ const Contact = () => {
 
               {/* Features */}
               <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+                <h3 className="text-2xl font-bold mb-6 text-white">
                   Why Choose Us
                 </h3>
                 <div className="space-y-4">
@@ -376,16 +376,16 @@ const Contact = () => {
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-300"
+                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors duration-300"
                     >
-                      <div className="flex-shrink-0 p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-                        <feature.icon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      <div className="flex-shrink-0 p-2 bg-purple-100 rounded-lg">
+                        <feature.icon className="w-5 h-5 text-purple-600" />
                       </div>
                       <div>
-                        <h4 className="font-semibold text-gray-900 dark:text-white">
+                        <h4 className="font-semibold text-white">
                           {feature.title}
                         </h4>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">
+                        <p className="text-sm text-gray-300">
                           {feature.description}
                         </p>
                       </div>
@@ -396,18 +396,18 @@ const Contact = () => {
 
               {/* Map Placeholder */}
               <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+                <h3 className="text-2xl font-bold mb-6 text-white">
                   Visit Our Office
                 </h3>
-                <div className="h-64 rounded-2xl overflow-hidden bg-gray-200 dark:bg-gray-700 relative">
+                <div className="h-64 rounded-2xl overflow-hidden bg-gray-200 relative">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <div className="text-center">
-                      <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-400 dark:text-gray-500" />
-                      <p className="text-gray-500 dark:text-gray-400">
+                      <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-400" />
+                      <p className="text-gray-500">
                         Interactive Map Coming Soon
                       </p>
-                      <p className="text-sm text-gray-400 dark:text-gray-500 mt-2">
-                        123 Wellness Street, Health City, HC 12345
+                      <p className="text-sm text-gray-400 mt-2">
+                        5N/44A, Bk Chowk, Block N, NIT 5, Near Btw, BK Chowk-121001
                       </p>
                     </div>
                   </div>

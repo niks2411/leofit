@@ -18,7 +18,6 @@ const Navbar = () => {
 
   const navItems = [
     { path: '/', label: 'Home' },
-    { path: '/programs', label: 'Programs' },
     { path: '/about', label: 'About' },
     { path: '/testimonials', label: 'Testimonials' },
     { path: '/contact', label: 'Contact' }
@@ -61,7 +60,7 @@ const Navbar = () => {
               whileHover={{ scale: 1.05 }}
               className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent"
             >
-              LeoFit Corporate
+              Leofitt Global
             </motion.div>
           </Link>
 

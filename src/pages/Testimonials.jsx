@@ -117,7 +117,7 @@ const Testimonials = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen pt-24 bg-gray-900">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-orange-500/10"></div>
@@ -128,13 +128,13 @@ const Testimonials = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               What Our{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Clients Say
               </span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Trusted by industry leaders for exceptional wellness programs. 
               See how we've transformed workplaces across different industries.
             </p>
@@ -143,7 +143,7 @@ const Testimonials = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-white dark:bg-gray-800">
+      <section className="py-16 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
@@ -166,7 +166,7 @@ const Testimonials = () => {
                 >
                   {stat.number}
                 </motion.div>
-                <div className="text-gray-600 dark:text-gray-300">
+                <div className="text-gray-300">
                   {stat.label}
                 </div>
               </motion.div>
@@ -176,7 +176,7 @@ const Testimonials = () => {
       </section>
 
       {/* Testimonials Carousel */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900">
+      <section className="py-20 bg-gray-900">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative">
             {/* Carousel Container */}
@@ -190,7 +190,7 @@ const Testimonials = () => {
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                   className="relative"
                 >
-                  <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 md:p-12 shadow-xl">
+                  <div className="bg-gray-800 rounded-2xl p-8 md:p-12 shadow-xl">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
                       {/* Company Info */}
                       <div className="text-center lg:text-left">
@@ -207,7 +207,7 @@ const Testimonials = () => {
                           </div>
                         </div>
                         
-                        <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                        <h3 className="text-2xl font-bold text-white mb-2">
                           {testimonials[currentTestimonial].company}
                         </h3>
                         <p className="text-purple-600 dark:text-purple-400 font-semibold mb-3">
@@ -224,22 +224,22 @@ const Testimonials = () => {
 
                       {/* Testimonial Content */}
                       <div className="lg:col-span-2">
-                        <blockquote className="text-xl md:text-2xl text-gray-700 dark:text-gray-300 mb-8 leading-relaxed">
+                        <blockquote className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed">
                           "{testimonials[currentTestimonial].text}"
                         </blockquote>
                         
                         <div className="flex items-center justify-between">
                           <div>
-                            <div className="font-semibold text-gray-900 dark:text-white">
+                            <div className="font-semibold text-white">
                               {testimonials[currentTestimonial].author}
                             </div>
-                            <div className="text-gray-600 dark:text-gray-400">
+                            <div className="text-gray-300">
                               {testimonials[currentTestimonial].role}
                             </div>
                           </div>
                           
                           <div className="text-right">
-                            <div className="text-sm text-gray-500 dark:text-gray-400">
+                            <div className="text-sm text-gray-500">
                               Client since 2023
                             </div>
                           </div>
@@ -257,18 +257,18 @@ const Testimonials = () => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={prevTestimonial}
-                className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="p-3 bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700"
               >
-                <ChevronLeft className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                <ChevronLeft className="w-6 h-6 text-gray-300" />
               </motion.button>
               
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 onClick={nextTestimonial}
-                className="p-3 bg-white dark:bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700"
+                className="p-3 bg-gray-800 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-700"
               >
-                <ChevronRight className="w-6 h-6 text-gray-600 dark:text-gray-300" />
+                <ChevronRight className="w-6 h-6 text-gray-300" />
               </motion.button>
             </div>
 
@@ -283,7 +283,7 @@ const Testimonials = () => {
                   className={`w-3 h-3 rounded-full transition-all duration-500 ${
                     currentTestimonial === index
                       ? 'bg-gradient-to-r from-purple-600 to-pink-600 w-8'
-                      : 'bg-gray-300 dark:bg-gray-600 hover:bg-gray-400 dark:hover:bg-gray-500'
+                      : 'bg-gray-600 hover:bg-gray-500'
                   }`}
                 />
               ))}
@@ -293,7 +293,7 @@ const Testimonials = () => {
       </section>
 
       {/* Client Logos */}
-      <section className="py-20 bg-white dark:bg-gray-800">
+      <section className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -302,7 +302,7 @@ const Testimonials = () => {
             viewport={{ once: true }}
             className="text-center mb-12"
           >
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-bold mb-6 text-white">
               Trusted by Leading{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Companies
@@ -322,7 +322,7 @@ const Testimonials = () => {
                 key={index}
                 variants={itemVariants}
                 whileHover={{ y: -10, scale: 1.05 }}
-                className="p-6 rounded-xl text-center hover:shadow-xl transition-all duration-500 bg-gray-50 dark:bg-gray-700"
+                className="p-6 rounded-xl text-center hover:shadow-xl transition-all duration-500 bg-gray-700"
               >
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 p-1">
                   <img
@@ -331,10 +331,10 @@ const Testimonials = () => {
                     className="w-full h-full object-cover rounded-full"
                   />
                 </div>
-                <div className="font-semibold text-gray-900 dark:text-white">
+                <div className="font-semibold text-white">
                   {testimonial.company}
                 </div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-gray-300">
                   {testimonial.industry}
                 </div>
               </motion.div>
@@ -357,7 +357,7 @@ const Testimonials = () => {
             </h2>
             <p className="text-xl text-white/90 mb-8">
               Transform your workplace culture and join hundreds of companies that have already 
-              improved their employee wellness with LeoFit Corporate.
+              improved their employee wellness with Leofitt Global.
             </p>
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)" }}

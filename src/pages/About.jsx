@@ -107,7 +107,7 @@ const About = () => {
   };
 
   return (
-    <div className="min-h-screen pt-24 bg-white dark:bg-gray-900">
+    <div className="min-h-screen pt-24 bg-gray-900">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-orange-500/10"></div>
@@ -118,13 +118,13 @@ const About = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               About{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                LeoFit Corporate
+                Leofitt Global
               </span>
             </h1>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Revolutionizing workplace wellness through innovative programs and expert guidance. 
               We believe healthy employees are the foundation of successful organizations.
             </p>
@@ -133,7 +133,7 @@ const About = () => {
       </section>
 
       {/* Mission & Vision */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             variants={containerVariants}
@@ -143,15 +143,15 @@ const About = () => {
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
           >
             <motion.div variants={itemVariants}>
-              <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+              <h2 className="text-3xl font-bold mb-6 text-white">
                 Our Mission
               </h2>
-              <p className="text-lg mb-6 text-gray-600 dark:text-gray-300">
+              <p className="text-lg mb-6 text-gray-300">
                 We believe that healthy employees are the foundation of successful organizations. 
                 Our mission is to transform workplace wellness through comprehensive, engaging 
                 programs that promote physical and mental well-being.
               </p>
-              <p className="text-lg text-gray-600 dark:text-gray-300">
+              <p className="text-lg text-gray-300">
                 From life-saving CPR certifications to energizing HIIT sessions, we provide 
                 the tools and expertise your team needs to thrive both personally and professionally.
               </p>
@@ -159,13 +159,13 @@ const About = () => {
             
             <motion.div variants={itemVariants} className="relative">
               <div className="aspect-square bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 rounded-2xl p-1 hover:scale-105 transition-transform duration-500">
-                <div className="w-full h-full rounded-2xl bg-white dark:bg-gray-800 flex items-center justify-center">
+                <div className="w-full h-full rounded-2xl bg-gray-800 flex items-center justify-center">
                   <div className="text-center">
                     <Heart className="w-24 h-24 mx-auto mb-4 text-pink-500" />
-                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                    <h3 className="text-2xl font-bold text-white">
                       Wellness First
                     </h3>
-                    <p className="text-gray-600 dark:text-gray-300 mt-2">
+                    <p className="text-gray-300 mt-2">
                       Your team's health is our priority
                     </p>
                   </div>
@@ -177,7 +177,7 @@ const About = () => {
       </section>
 
       {/* Values */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -186,7 +186,7 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-bold mb-6 text-white">
               Our Core{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Values
@@ -206,15 +206,15 @@ const About = () => {
                 key={index}
                 variants={itemVariants}
                 whileHover={{ y: -10, scale: 1.02 }}
-                className="text-center p-6 rounded-2xl bg-gray-50 dark:bg-gray-800 hover:shadow-xl transition-all duration-500"
+                className="text-center p-6 rounded-2xl bg-gray-800 hover:shadow-xl transition-all duration-500"
               >
                 <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mx-auto mb-4">
                   <value.icon className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-xl font-bold mb-3 text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold mb-3 text-white">
                   {value.title}
                 </h3>
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-gray-300">
                   {value.description}
                 </p>
               </motion.div>
@@ -224,7 +224,7 @@ const About = () => {
       </section>
 
       {/* Timeline */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
+      <section className="py-20 bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -233,7 +233,7 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-bold mb-6 text-white">
               Our{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Journey
@@ -263,7 +263,7 @@ const About = () => {
                   <div className={`w-1/2 ${index % 2 === 0 ? 'pr-8 text-right' : 'pl-8'}`}>
                     <motion.div
                       whileHover={{ scale: 1.05 }}
-                      className="p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 bg-white dark:bg-gray-700"
+                      className="p-6 rounded-xl shadow-lg hover:shadow-xl transition-all duration-500 bg-gray-700"
                     >
                       <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-4 mx-auto">
                         <milestone.icon className="w-6 h-6 text-white" />
@@ -271,10 +271,10 @@ const About = () => {
                       <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
                         {milestone.year}
                       </div>
-                      <h4 className="text-xl font-semibold mb-2 text-gray-900 dark:text-white">
+                      <h4 className="text-xl font-semibold mb-2 text-white">
                         {milestone.title}
                       </h4>
-                      <p className="text-gray-600 dark:text-gray-300">
+                      <p className="text-gray-300">
                         {milestone.description}
                       </p>
                     </motion.div>
@@ -290,7 +290,7 @@ const About = () => {
       </section>
 
       {/* Team Section */}
-      <section className="py-20 bg-white dark:bg-gray-900">
+      <section className="py-20 bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -299,13 +299,13 @@ const About = () => {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h2 className="text-3xl font-bold mb-6 text-white">
               Meet Our{' '}
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Team
               </span>
             </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Our expert team is dedicated to transforming workplace wellness and creating healthier, 
               more productive work environments.
             </p>
@@ -340,21 +340,21 @@ const About = () => {
                   </div>
                 </div>
                 
-                <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white">
+                <h3 className="text-xl font-bold mb-2 text-white">
                   {member.name}
                 </h3>
                 <p className="text-purple-600 dark:text-purple-400 font-semibold mb-3">
                   {member.role}
                 </p>
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4">
+                <p className="text-gray-300 text-sm mb-4">
                   {member.bio}
                 </p>
                 
                 <div className="flex justify-center space-x-3">
-                  <a href={member.social.linkedin} className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-colors duration-300">
+                  <a href={member.social.linkedin} className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-colors duration-300">
                     <span className="text-xs font-bold">in</span>
                   </a>
-                  <a href={member.social.twitter} className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-colors duration-300">
+                  <a href={member.social.twitter} className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center hover:bg-purple-600 hover:text-white transition-colors duration-300">
                     <span className="text-xs font-bold">t</span>
                   </a>
                 </div>

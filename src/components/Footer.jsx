@@ -1,27 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Facebook, Twitter, Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
+import { Linkedin, Instagram, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer = () => {
   const socialLinks = [
-    { icon: Facebook, href: '#', label: 'Facebook' },
-    { icon: Twitter, href: '#', label: 'Twitter' },
     { icon: Linkedin, href: '#', label: 'LinkedIn' },
-    { icon: Instagram, href: '#', label: 'Instagram' }
+    { icon: Instagram, href: 'https://www.instagram.com/leo_fitt360/', label: 'Instagram' }
   ];
 
   const quickLinks = [
-    { path: '/programs', label: 'Programs' },
     { path: '/about', label: 'About Us' },
     { path: '/testimonials', label: 'Testimonials' },
     { path: '/contact', label: 'Contact' }
   ];
 
   const contactInfo = [
-    { icon: Phone, text: '+1 (555) 123-4567' },
+    { icon: Phone, text: '+91 91662 45953' },
     { icon: Mail, text: 'corporate@leofit.com' },
-    { icon: MapPin, text: '123 Wellness Street, Health City, HC 12345' }
+    { icon: MapPin, text: '5N/44A, Bk Chowk, Block N, NIT 5, Near Btw, BK Chowk-121001' }
   ];
 
   return (
@@ -37,7 +34,7 @@ const Footer = () => {
               className="mb-6"
             >
               <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent mb-4">
-                LeoFit Corporate
+                Leofitt Global
               </div>
               <p className="text-gray-300 mb-6 max-w-md">
                 Empowering your workforce with comprehensive corporate wellness programs. 
@@ -56,6 +53,8 @@ const Footer = () => {
                 <motion.a
                   key={social.label}
                   href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full flex items-center justify-center hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
@@ -126,7 +125,7 @@ const Footer = () => {
           className="border-t border-gray-700 mt-8 pt-8 text-center"
         >
           <p className="text-gray-400 text-sm">
-            © 2024 LeoFit Corporate. All rights reserved. | Empowering healthier workplaces.
+            © 2025 Leofitt Global. All rights reserved. | Empowering healthier workplaces.
           </p>
         </motion.div>
       </div>
@@ -134,4 +133,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default Footer;
