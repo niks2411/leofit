@@ -410,7 +410,7 @@ const Contact = () => {
               </motion.div>
 
               {/* Map Placeholder */}
-              <motion.div variants={itemVariants}>
+              {/* <motion.div variants={itemVariants}>
                 <h3 className="text-2xl font-bold mb-6 text-white">
                   Visit Our Office
                 </h3>
@@ -427,7 +427,7 @@ const Contact = () => {
                     </div>
                   </div>
                 </div>
-              </motion.div>
+              </motion.div> */}
             </motion.div>
           </div>
         </div>
