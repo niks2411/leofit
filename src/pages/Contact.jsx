@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Users, Award } from 'lucide-react';
-
+import { serverTimestamp } from 'firebase/firestore';
 const Contact = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -77,13 +77,14 @@ const Contact = () => {
         company: formData.company,
         phone: formData.phone,
         message: formData.message,
-        program: formData.program
+        program: formData.program,
+        timestamp: serverTimestamp(),
       });
       
       setIsSubmitted(true);
     } catch (error) {
       console.error("Error saving contact form: ", error);
-      alert("There was an error submitting your message. Please try again.");
+      alert(`Submission failed: ${error.message}`);
     } finally {
       setIsSubmitting(false);
       

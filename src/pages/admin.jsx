@@ -22,14 +22,14 @@ const Admin = () => {
       setError(null);
       try {
         const q = query(
-          collection(db, 'contacts')
-          // orderBy('date', 'desc')
+          collection(db, 'contacts'),
+          orderBy('timestamp', 'desc') // Sort by timestamp (newest first)
         );
         const querySnapshot = await getDocs(q);
         const fetchedMessages = querySnapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data(),
-          date: doc.data().date?.toDate() || new Date()
+          timestamp: doc.data().timestamp?.toDate() || new Date(), // Fallback to current date if missing
         }));
         setMessages(fetchedMessages);
         setFilteredMessages(fetchedMessages);
@@ -58,7 +58,7 @@ const Admin = () => {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-     const ADMIN_PASSWORD = "1234";
+    const ADMIN_PASSWORD = "1234";
     
     if (password === ADMIN_PASSWORD) {
       setAuthenticated(true);
@@ -66,7 +66,6 @@ const Admin = () => {
       setError('Incorrect password');
     }
   };
-  
 
   const exportToCSV = () => {
     const headers = ['Name', 'Email', 'Phone', 'Company', 'Program', 'Message', 'Date'];
@@ -80,7 +79,7 @@ const Admin = () => {
           `"${msg.company || ''}"`,
           `"${msg.program || ''}"`,
           `"${msg.message?.replace(/"/g, '""') || ''}"`,
-          `"${msg.date.toLocaleString()}"`
+          `"${msg.timestamp.toLocaleString()}"` // Updated to use timestamp
         ].join(',')
       )
     ].join('\n');
@@ -108,7 +107,7 @@ const Admin = () => {
   const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 mt-5"> {/* Added mt-5 (20px margin top) */}
+    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 mt-5">
       {!authenticated ? (
         <div className="max-w-md mx-auto mt-20 p-8 bg-gray-800 rounded-lg shadow-lg">
           <div className="text-center mb-6">
@@ -210,12 +209,12 @@ const Admin = () => {
                             {msg.message || '-'}
                           </td>
                           <td className="px-4 py-3">
-                            {msg.date.toLocaleString('en-US', {
+                            {msg.timestamp.toLocaleString('en-US', {
                               year: 'numeric',
                               month: 'short',
                               day: 'numeric',
                               hour: '2-digit',
-                              minute: '2-digit'
+                              minute: '2-digit',
                             })}
                           </td>
                         </tr>
