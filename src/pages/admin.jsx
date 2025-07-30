@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { Mail, Phone, Search, Building2, Calendar, User } from 'lucide-react';
+import { Mail, Phone, Search, Building2, Calendar, User, ChevronLeft, ChevronRight, Lock } from 'lucide-react';
 
 const Admin = () => {
+  const [password, setPassword] = useState('');
+  const [authenticated, setAuthenticated] = useState(false);
+  const [error, setError] = useState('');
+
   const [messages, setMessages] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const messagesPerPage = 10;
 
-  // Simulated data - in a real app, this would come from an API
+  const ADMIN_PASSWORD = "1234";
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    if (password === ADMIN_PASSWORD) {
+      setAuthenticated(true);
+      setError('');
+    } else {
+      setError('Incorrect password. Please try again.');
+    }
+  };
+
   useEffect(() => {
+    if (!authenticated) return;
+    
     const dummyMessages = [
       {
         id: 1,
@@ -63,7 +79,7 @@ const Admin = () => {
       }
     ];
     setMessages(dummyMessages);
-  }, []);
+  }, [authenticated]);
 
   const filteredMessages = messages
     .filter(message => {
@@ -76,7 +92,6 @@ const Admin = () => {
     })
     .sort((a, b) => new Date(b.date) - new Date(a.date));
 
-  // Get current messages for pagination
   const indexOfLastMessage = currentPage * messagesPerPage;
   const indexOfFirstMessage = indexOfLastMessage - messagesPerPage;
   const currentMessages = filteredMessages.slice(indexOfFirstMessage, indexOfLastMessage);
@@ -87,19 +102,58 @@ const Admin = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  if (!authenticated) {
+    return (
+      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
+        <div className="bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full">
+          <div className="text-center mb-8">
+            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
+              <Lock className="h-8 w-8 text-white" />
+            </div>
+            <h2 className="text-2xl font-bold text-white mb-2">
+              Admin Portal
+            </h2>
+            <p className="text-gray-400">
+              Enter the password to access the dashboard
+            </p>
+          </div>
+
+          <form onSubmit={handleLogin}>
+            <div className="mb-6">
+              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  id="password"
+                  type="password"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter admin password"
+                />
+              </div>
+              {error && (
+                <p className="mt-2 text-sm text-red-500">{error}</p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full py-3 px-4 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600"
+            >
+              Unlock Dashboard
+            </button>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 pt-6">
-      {/* Background gradient overlay */}
-      <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-gray-900 to-purple-900/20 pointer-events-none" />
-      
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-8"
-        >
+        <div className="mb-8">
           <div className="text-center mb-8">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
               Messages <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Dashboard</span>
@@ -108,15 +162,9 @@ const Admin = () => {
               View all incoming messages from your corporate wellness contact form
             </p>
           </div>
-        </motion.div>
+        </div>
 
-        {/* Search */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8"
-        >
+        <div className="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
           <div className="relative max-w-md mx-auto">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               <Search className="h-5 w-5 text-gray-400" />
@@ -124,20 +172,14 @@ const Admin = () => {
             <input
               type="text"
               placeholder="Search messages..."
-              className="pl-10 pr-4 py-3 w-full bg-gray-700 border border-gray-600 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 text-white placeholder-gray-400 transition-all duration-300"
+              className="pl-10 pr-4 py-3 w-full bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-        </motion.div>
+        </div>
 
-        {/* Messages List */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="bg-gray-800 rounded-2xl shadow-lg overflow-hidden"
-        >
+        <div className="bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-700">
               <thead className="bg-gray-900">
@@ -170,14 +212,8 @@ const Admin = () => {
               </thead>
               <tbody className="bg-gray-800 divide-y divide-gray-700">
                 {currentMessages.length > 0 ? (
-                  currentMessages.map((message, index) => (
-                    <motion.tr 
-                      key={message.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: index * 0.05 }}
-                      className="hover:bg-gray-700 transition-colors duration-200"
-                    >
+                  currentMessages.map((message) => (
+                    <tr key={message.id} className="hover:bg-gray-700">
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
                           <div className="flex-shrink-0 h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center">
@@ -209,7 +245,7 @@ const Admin = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="text-sm text-gray-400">{formatDate(message.date)}</div>
                       </td>
-                    </motion.tr>
+                    </tr>
                   ))
                 ) : (
                   <tr>
@@ -225,21 +261,20 @@ const Admin = () => {
             </table>
           </div>
 
-          {/* Pagination */}
           {filteredMessages.length > messagesPerPage && (
             <div className="px-6 py-4 flex items-center justify-between border-t border-gray-700 bg-gray-900">
               <div className="flex-1 flex justify-between sm:hidden">
                 <button
                   onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                   disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-xl text-gray-300 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-xl text-gray-300 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
                 <button
                   onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                   disabled={currentPage === totalPages}
-                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-xl text-gray-300 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-xl text-gray-300 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </button>
@@ -259,7 +294,7 @@ const Admin = () => {
                     <button
                       onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
                       disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-xl border border-gray-600 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-xl border border-gray-600 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <span className="sr-only">Previous</span>
                       <ChevronLeft className="h-5 w-5" aria-hidden="true" />
@@ -268,7 +303,7 @@ const Admin = () => {
                       <button
                         key={page}
                         onClick={() => setCurrentPage(page)}
-                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors duration-200 ${
+                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                           currentPage === page
                             ? 'z-10 bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500 text-white'
                             : 'bg-gray-800 border-gray-600 text-gray-400 hover:bg-gray-700'
@@ -280,7 +315,7 @@ const Admin = () => {
                     <button
                       onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
                       disabled={currentPage === totalPages}
-                      className="relative inline-flex items-center px-2 py-2 rounded-r-xl border border-gray-600 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-200"
+                      className="relative inline-flex items-center px-2 py-2 rounded-r-xl border border-gray-600 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       <span className="sr-only">Next</span>
                       <ChevronRight className="h-5 w-5" aria-hidden="true" />
@@ -290,7 +325,7 @@ const Admin = () => {
               </div>
             </div>
           )}
-        </motion.div>
+        </div>
       </div>
     </div>
   );
