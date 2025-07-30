@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { motion , AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Users, Award } from 'lucide-react';
 
 const Contact = () => {
@@ -67,8 +67,11 @@ const Contact = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
+    // Log form data to console in JSON format
+    console.log('Form Submission:', JSON.stringify(formData, null, 2));
+    
     // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
     setIsSubmitted(true);
     setIsSubmitting(false);
@@ -87,8 +90,12 @@ const Contact = () => {
     }, 3000);
   };
 
-  const handleInputChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ 
+      ...prev, 
+      [name]: value 
+    }));
   };
 
   const containerVariants = {
@@ -149,9 +156,10 @@ const Contact = () => {
               initial="hidden"
               whileInView="visible"
               viewport={{ once: true }}
+              className="bg-gray-700/50 p-8 rounded-2xl shadow-lg"
             >
               <motion.div variants={itemVariants} className="mb-8">
-                <h2 className="text-3xl font-bold mb-6 text-white">
+                <h2 className="text-3xl font-bold mb-4 text-white">
                   Send us a message
                 </h2>
                 <p className="text-gray-300">
@@ -166,15 +174,16 @@ const Contact = () => {
                       <input
                         type="text"
                         id="name"
+                        name="name"
                         value={formData.name}
-                        onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg transition-all duration-300 bg-gray-700 border-2 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="name"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.name ? '-0.5rem' : '0.75rem',
                           fontSize: formData.name ? '0.875rem' : '1rem',
@@ -189,15 +198,16 @@ const Contact = () => {
                       <input
                         type="email"
                         id="email"
+                        name="email"
                         value={formData.email}
-                        onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg transition-all duration-300 bg-gray-700 border-2 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="email"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.email ? '-0.5rem' : '0.75rem',
                           fontSize: formData.email ? '0.875rem' : '1rem',
@@ -214,15 +224,16 @@ const Contact = () => {
                       <input
                         type="text"
                         id="company"
+                        name="company"
                         value={formData.company}
-                        onChange={(e) => handleInputChange('company', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg transition-all duration-300 bg-gray-700 border-2 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="company"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.company ? '-0.5rem' : '0.75rem',
                           fontSize: formData.company ? '0.875rem' : '1rem',
@@ -237,14 +248,15 @@ const Contact = () => {
                       <input
                         type="tel"
                         id="phone"
+                        name="phone"
                         value={formData.phone}
-                        onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 rounded-lg transition-all duration-300 bg-gray-700 border-2 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                         placeholder=" "
                       />
                       <label
                         htmlFor="phone"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.phone ? '-0.5rem' : '0.75rem',
                           fontSize: formData.phone ? '0.875rem' : '1rem',
@@ -259,9 +271,10 @@ const Contact = () => {
                   <div className="relative">
                     <select
                       id="program"
+                      name="program"
                       value={formData.program}
-                      onChange={(e) => handleInputChange('program', e.target.value)}
-                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105"
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 rounded-lg transition-all duration-300 bg-gray-700 border-2 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50"
                       required
                     >
                       <option value="">Select a program</option>
@@ -271,21 +284,28 @@ const Contact = () => {
                         </option>
                       ))}
                     </select>
+                    <label
+                      htmlFor="program"
+                      className="absolute left-4 -top-2 transition-all duration-300 text-sm text-purple-600 bg-gray-700 px-2 rounded"
+                    >
+                      Program Interest *
+                    </label>
                   </div>
 
                   <div className="relative">
                     <textarea
                       id="message"
+                      name="message"
                       value={formData.message}
-                      onChange={(e) => handleInputChange('message', e.target.value)}
+                      onChange={handleInputChange}
                       rows={5}
-                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer resize-none"
+                      className="w-full px-4 py-3 rounded-lg transition-all duration-300 bg-gray-700 border-2 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/50 resize-none"
                       placeholder=" "
                       required
                     />
                     <label
                       htmlFor="message"
-                      className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                      className="absolute left-4 transition-all duration-300 text-gray-400 bg-gray-700 px-2 rounded"
                       style={{
                         top: formData.message ? '-0.5rem' : '0.75rem',
                         fontSize: formData.message ? '0.875rem' : '1rem',
@@ -324,7 +344,7 @@ const Contact = () => {
               </motion.div>
             </motion.div>
 
-            {/* Contact Info & Map */}
+            {/* Contact Info */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -332,18 +352,18 @@ const Contact = () => {
               viewport={{ once: true }}
               className="space-y-8"
             >
-              <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold mb-8 text-white">
+              <motion.div variants={itemVariants} className="bg-gray-700/50 p-8 rounded-2xl shadow-lg">
+                <h3 className="text-2xl font-bold mb-6 text-white">
                   Contact Information
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {contactInfo.map((contact, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, x: 20 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-300"
+                      className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-600/50 transition-colors duration-300"
                     >
                       <div className="flex-shrink-0 p-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg">
                         <contact.icon className="w-6 h-6" />
@@ -365,18 +385,18 @@ const Contact = () => {
               </motion.div>
 
               {/* Features */}
-              <motion.div variants={itemVariants}>
+              <motion.div variants={itemVariants} className="bg-gray-700/50 p-8 rounded-2xl shadow-lg">
                 <h3 className="text-2xl font-bold mb-6 text-white">
                   Why Choose Us
                 </h3>
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {features.map((feature, index) => (
                     <motion.div
                       key={index}
                       initial={{ opacity: 0, y: 20 }}
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
-                      className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors duration-300"
+                      className="flex items-start space-x-3 p-4 rounded-lg hover:bg-gray-600/50 transition-colors duration-300"
                     >
                       <div className="flex-shrink-0 p-2 bg-purple-100 rounded-lg">
                         <feature.icon className="w-5 h-5 text-purple-600" />
@@ -393,26 +413,6 @@ const Contact = () => {
                   ))}
                 </div>
               </motion.div>
-
-              {/* Map Placeholder */}
-              <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold mb-6 text-white">
-                  Visit Our Office
-                </h3>
-                <div className="h-64 rounded-2xl overflow-hidden bg-gray-200 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                      <p className="text-gray-500">
-                        Interactive Map Coming Soon
-                      </p>
-                      <p className="text-sm text-gray-400 mt-2">
-                        5N/44A, Bk Chowk, Block N, NIT 5, Near Btw, BK Chowk-121001
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -421,4 +421,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;

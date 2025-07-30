@@ -1,6 +1,7 @@
 import React from 'react';
-import { motion  } from 'framer-motion';
-import { Heart, Target, Eye, Users, Award, Star, Calendar, TrendingUp } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Heart, Target, Eye, Users, Award, Star } from 'lucide-react';
+import yogaImage from '../images/yoga.jpg';
 
 const About = () => {
   const timeline = [
@@ -78,7 +79,7 @@ const About = () => {
       description: 'Delivering the highest quality wellness programs'
     },
     {
-      icon: TrendingUp,
+      icon: Star,
       title: 'Innovation',
       description: 'Continuously improving our programs and services'
     }
@@ -159,15 +160,22 @@ const About = () => {
             
             <motion.div variants={itemVariants} className="relative">
               <div className="aspect-square bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 rounded-2xl p-1 hover:scale-105 transition-transform duration-500">
-                <div className="w-full h-full rounded-2xl bg-gray-800 flex items-center justify-center">
-                  <div className="text-center">
-                    <Heart className="w-24 h-24 mx-auto mb-4 text-pink-500" />
-                    <h3 className="text-2xl font-bold text-white">
-                      Wellness First
-                    </h3>
-                    <p className="text-gray-300 mt-2">
-                      Your team's health is our priority
-                    </p>
+                <div className="w-full h-full rounded-2xl bg-gray-800 overflow-hidden relative">
+                  <img 
+                    src={yogaImage} 
+                    alt="Wellness First" 
+                    className="w-full h-full object-cover opacity-70"
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center p-6 text-center">
+                    <div>
+                      {/* <Heart className="w-12 h-12 mx-auto mb-4 text-pink-500" /> */}
+                      <h3 className="text-2xl font-bold text-blue-400">
+                        {/* Wellness First */}
+                      </h3>
+                      <p className="text-grey-600 mt-2">
+                        {/* Your team's health is our priority */}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -367,4 +375,4 @@ const About = () => {
   );
 };
 
-export default About; 
+export default About;

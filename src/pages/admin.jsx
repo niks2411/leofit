@@ -130,7 +130,7 @@ const Admin = () => {
                   className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter admin password"
+                  placeholder="Enter your password"
                 />
               </div>
               {error && (
