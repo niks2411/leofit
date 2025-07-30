@@ -1,332 +1,286 @@
-import React, { useState, useEffect } from 'react';
-import { Mail, Phone, Search, Building2, Calendar, User, ChevronLeft, ChevronRight, Lock } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { db } from '../firebase';
+import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { Download, Loader2, Lock, Search } from 'lucide-react';
 
 const Admin = () => {
   const [password, setPassword] = useState('');
   const [authenticated, setAuthenticated] = useState(false);
-  const [error, setError] = useState('');
-
   const [messages, setMessages] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [filteredMessages, setFilteredMessages] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const messagesPerPage = 10;
-
-  const ADMIN_PASSWORD = "1234";
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
-      setAuthenticated(true);
-      setError('');
-    } else {
-      setError('Incorrect password. Please try again.');
-    }
-  };
 
   useEffect(() => {
     if (!authenticated) return;
-    
-    const dummyMessages = [
-      {
-        id: 1,
-        name: 'John Doe',
-        email: 'john@example.com',
-        company: 'Acme Inc',
-        phone: '+1 555-123-4567',
-        message: 'Interested in your corporate wellness programs for our 100+ employees.',
-        program: 'Custom Program',
-        date: '2023-05-15T10:30:00Z'
-      },
-      {
-        id: 2,
-        name: 'Jane Smith',
-        email: 'jane@example.com',
-        company: 'TechCorp',
-        phone: '+1 555-987-6543',
-        message: 'Looking for CPR certification for our team of 20.',
-        program: 'CPR Certification',
-        date: '2023-05-14T14:45:00Z'
-      },
-      {
-        id: 3,
-        name: 'Alex Johnson',
-        email: 'alex@healthsolutions.com',
-        company: 'Health Solutions Ltd',
-        phone: '+1 555-456-7890',
-        message: 'We need a comprehensive wellness program for our remote workforce of 150 employees.',
-        program: 'Remote Wellness',
-        date: '2023-05-13T09:15:00Z'
-      },
-      {
-        id: 4,
-        name: 'Sarah Williams',
-        email: 'sarah@innovatetech.com',
-        company: 'InnovateTech',
-        phone: '+1 555-234-5678',
-        message: 'Interested in stress management workshops for our development team.',
-        program: 'Stress Management',
-        date: '2023-05-12T16:20:00Z'
-      },
-      {
-        id: 5,
-        name: 'Michael Brown',
-        email: 'michael@globalcorp.com',
-        company: 'Global Corp',
-        phone: '+1 555-345-6789',
-        message: 'Looking to implement HIIT training sessions for our sales team.',
-        program: 'HIIT Training',
-        date: '2023-05-11T11:45:00Z'
+
+    const fetchMessages = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const q = query(
+          collection(db, 'contacts')
+          // orderBy('date', 'desc')
+        );
+        const querySnapshot = await getDocs(q);
+        const fetchedMessages = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data(),
+          date: doc.data().date?.toDate() || new Date()
+        }));
+        setMessages(fetchedMessages);
+        setFilteredMessages(fetchedMessages);
+      } catch (err) {
+        console.error('Error fetching messages:', err);
+        setError('Failed to load messages. Please try again.');
+      } finally {
+        setIsLoading(false);
       }
-    ];
-    setMessages(dummyMessages);
+    };
+
+    fetchMessages();
   }, [authenticated]);
 
-  const filteredMessages = messages
-    .filter(message => {
-      return (
-        message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        message.company.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        message.message.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-    })
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  useEffect(() => {
+    const filtered = messages.filter(
+      message =>
+        message.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        message.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        message.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        message.program?.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+    setFilteredMessages(filtered);
+    setCurrentPage(1);
+  }, [searchTerm, messages]);
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+     const ADMIN_PASSWORD = "1234";
+    
+    if (password === ADMIN_PASSWORD) {
+      setAuthenticated(true);
+    } else {
+      setError('Incorrect password');
+    }
+  };
+  
+
+  const exportToCSV = () => {
+    const headers = ['Name', 'Email', 'Phone', 'Company', 'Program', 'Message', 'Date'];
+    const csvContent = [
+      headers.join(','),
+      ...filteredMessages.map(msg => 
+        [
+          `"${msg.name || ''}"`,
+          `"${msg.email || ''}"`,
+          `"${msg.phone || ''}"`,
+          `"${msg.company || ''}"`,
+          `"${msg.program || ''}"`,
+          `"${msg.message?.replace(/"/g, '""') || ''}"`,
+          `"${msg.date.toLocaleString()}"`
+        ].join(',')
+      )
+    ].join('\n');
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', `contact-submissions-${new Date().toISOString()}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const handleLogout = () => {
+    setAuthenticated(false);
+    setPassword('');
+    setMessages([]);
+    setFilteredMessages([]);
+  };
 
   const indexOfLastMessage = currentPage * messagesPerPage;
   const indexOfFirstMessage = indexOfLastMessage - messagesPerPage;
   const currentMessages = filteredMessages.slice(indexOfFirstMessage, indexOfLastMessage);
   const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
 
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
-
-  if (!authenticated) {
-    return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center p-4">
-        <div className="bg-gray-800 rounded-2xl shadow-xl p-8 max-w-md w-full">
-          <div className="text-center mb-8">
-            <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 mb-4">
-              <Lock className="h-8 w-8 text-white" />
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-2">
-              Admin Portal
-            </h2>
-            <p className="text-gray-400">
-              Enter the password to access the dashboard
-            </p>
+  return (
+    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 mt-5"> {/* Added mt-5 (20px margin top) */}
+      {!authenticated ? (
+        <div className="max-w-md mx-auto mt-20 p-8 bg-gray-800 rounded-lg shadow-lg">
+          <div className="text-center mb-6">
+            <Lock className="w-12 h-12 mx-auto text-purple-500 mb-4" />
+            <h2 className="text-2xl font-bold">Admin Login</h2>
+            <p className="text-gray-400 mt-2">Enter your password to access the dashboard</p>
           </div>
-
-          <form onSubmit={handleLogin}>
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                Password
-              </label>
-              <div className="relative">
-                <input
-                  id="password"
-                  type="password"
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="Enter your password"
-                />
-              </div>
-              {error && (
-                <p className="mt-2 text-sm text-red-500">{error}</p>
-              )}
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded mb-4">
+              {error}
             </div>
-
-            <button
-              type="submit"
-              className="w-full py-3 px-4 rounded-xl text-sm font-medium text-white bg-gradient-to-r from-purple-600 to-pink-600"
-            >
-              Unlock Dashboard
+          )}
+          <form onSubmit={handlePasswordSubmit} className="space-y-4">
+            <div>
+              <input
+                type="password"
+                placeholder="Enter admin password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setError(null);
+                }}
+                className="w-full px-4 py-2 bg-gray-700 rounded text-white"
+                autoFocus
+              />
+            </div>
+            <button type="submit" className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded text-white">
+              Login
             </button>
           </form>
         </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="min-h-screen bg-gray-900 pt-6">
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mb-8">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              Messages <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Dashboard</span>
-            </h1>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              View all incoming messages from your corporate wellness contact form
-            </p>
-          </div>
-        </div>
-
-        <div className="bg-gray-800 rounded-2xl shadow-lg p-6 mb-8">
-          <div className="relative max-w-md mx-auto">
-            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-5 w-5 text-gray-400" />
+      ) : (
+        <div className="space-y-6">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <h1 className="text-2xl md:text-3xl font-bold">Contact Form Submissions</h1>
+            <div className="flex gap-2">
+              <button 
+                onClick={exportToCSV}
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 rounded text-white"
+              >
+                <Download className="w-4 h-4" />
+                Export CSV
+              </button>
+              <button 
+                onClick={handleLogout}
+                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 rounded"
+              >
+                Logout
+              </button>
             </div>
+          </div>
+
+          <div className="relative">
+            <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search messages..."
-              className="pl-10 pr-4 py-3 w-full bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400"
+              placeholder="Search by name, email, company or program..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-2 bg-gray-800 rounded text-white"
             />
           </div>
-        </div>
 
-        <div className="bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-700">
-              <thead className="bg-gray-900">
-                <tr>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    <div className="flex items-center">
-                      <User className="h-4 w-4 mr-2" />
-                      From
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    <div className="flex items-center">
-                      <Building2 className="h-4 w-4 mr-2" />
-                      Company
-                    </div>
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Program
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    Message
-                  </th>
-                  <th scope="col" className="px-6 py-4 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                    <div className="flex items-center">
-                      <Calendar className="h-4 w-4 mr-2" />
-                      Date
-                    </div>
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="bg-gray-800 divide-y divide-gray-700">
-                {currentMessages.length > 0 ? (
-                  currentMessages.map((message) => (
-                    <tr key={message.id} className="hover:bg-gray-700">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="flex items-center">
-                          <div className="flex-shrink-0 h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center">
-                            <Mail className="h-6 w-6 text-white" />
-                          </div>
-                          <div className="ml-4">
-                            <div className="text-sm font-medium text-white">{message.name}</div>
-                            <div className="text-sm text-gray-400">{message.email}</div>
-                            {message.phone && (
-                              <div className="text-sm text-gray-400 flex items-center mt-1">
-                                <Phone className="h-3 w-3 mr-1" />
-                                {message.phone}
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-white font-medium">{message.company}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-gradient-to-r from-purple-600 to-pink-600 text-white">
-                          {message.program}
-                        </span>
-                      </td>
-                      <td className="px-6 py-4 max-w-xs">
-                        <div className="text-sm text-gray-300 line-clamp-2 overflow-hidden">{message.message}</div>
-                      </td>
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-400">{formatDate(message.date)}</div>
-                      </td>
-                    </tr>
-                  ))
-                ) : (
-                  <tr>
-                    <td colSpan="5" className="px-6 py-12 text-center">
-                      <div className="flex flex-col items-center">
-                        <Mail className="h-12 w-12 text-gray-600 mb-4" />
-                        <p className="text-sm text-gray-400">No messages found</p>
-                      </div>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {filteredMessages.length > messagesPerPage && (
-            <div className="px-6 py-4 flex items-center justify-between border-t border-gray-700 bg-gray-900">
-              <div className="flex-1 flex justify-between sm:hidden">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-xl text-gray-300 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Previous
-                </button>
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-600 text-sm font-medium rounded-xl text-gray-300 bg-gray-800 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Next
-                </button>
-              </div>
-              <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
-                <div>
-                  <p className="text-sm text-gray-400">
-                    Showing <span className="font-medium text-white">{indexOfFirstMessage + 1}</span> to{' '}
-                    <span className="font-medium text-white">
-                      {Math.min(indexOfLastMessage, filteredMessages.length)}
-                    </span>{' '}
-                    of <span className="font-medium text-white">{filteredMessages.length}</span> results
-                  </p>
-                </div>
-                <div>
-                  <nav className="relative z-0 inline-flex rounded-xl shadow-sm -space-x-px" aria-label="Pagination">
-                    <button
-                      onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                      disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-2 py-2 rounded-l-xl border border-gray-600 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <span className="sr-only">Previous</span>
-                      <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                    {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-                      <button
-                        key={page}
-                        onClick={() => setCurrentPage(page)}
-                        className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                          currentPage === page
-                            ? 'z-10 bg-gradient-to-r from-purple-600 to-pink-600 border-purple-500 text-white'
-                            : 'bg-gray-800 border-gray-600 text-gray-400 hover:bg-gray-700'
-                        }`}
-                      >
-                        {page}
-                      </button>
-                    ))}
-                    <button
-                      onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                      disabled={currentPage === totalPages}
-                      className="relative inline-flex items-center px-2 py-2 rounded-r-xl border border-gray-600 bg-gray-800 text-sm font-medium text-gray-400 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <span className="sr-only">Next</span>
-                      <ChevronRight className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </nav>
-                </div>
-              </div>
+          {error && (
+            <div className="bg-red-500/10 border border-red-500 text-red-500 px-4 py-3 rounded">
+              {error}
             </div>
           )}
+
+          {isLoading ? (
+            <div className="flex justify-center items-center h-64">
+              <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+            </div>
+          ) : (
+            <>
+              <div className="overflow-auto rounded-lg border border-gray-700">
+                <table className="min-w-full">
+                  <thead className="bg-gray-800">
+                    <tr>
+                      <th className="px-4 py-3 text-left min-w-[150px]">Name</th>
+                      <th className="px-4 py-3 text-left">Email</th>
+                      <th className="px-4 py-3 text-left">Phone</th>
+                      <th className="px-4 py-3 text-left">Company</th>
+                      <th className="px-4 py-3 text-left">Program</th>
+                      <th className="px-4 py-3 text-left min-w-[200px]">Message</th>
+                      <th className="px-4 py-3 text-left min-w-[180px]">Date</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {currentMessages.length > 0 ? (
+                      currentMessages.map((msg) => (
+                        <tr key={msg.id} className="hover:bg-gray-800/50 border-t border-gray-700">
+                          <td className="px-4 py-3 font-medium">{msg.name || '-'}</td>
+                          <td className="px-4 py-3 text-purple-400 break-all">{msg.email || '-'}</td>
+                          <td className="px-4 py-3">{msg.phone || '-'}</td>
+                          <td className="px-4 py-3">{msg.company || '-'}</td>
+                          <td className="px-4 py-3">{msg.program || '-'}</td>
+                          <td className="px-4 py-3 max-w-xs truncate" title={msg.message}>
+                            {msg.message || '-'}
+                          </td>
+                          <td className="px-4 py-3">
+                            {msg.date.toLocaleString('en-US', {
+                              year: 'numeric',
+                              month: 'short',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan={7} className="text-center py-8 text-gray-400">
+                          {searchTerm ? 'No matching submissions found' : 'No submissions yet'}
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {filteredMessages.length > 0 && (
+                <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-between">
+                  <div className="text-sm text-gray-400">
+                    Showing {indexOfFirstMessage + 1} to{' '}
+                    {Math.min(indexOfLastMessage, filteredMessages.length)} of{' '}
+                    {filteredMessages.length} submissions
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      className="px-4 py-2 bg-gray-700 rounded disabled:opacity-50"
+                      disabled={currentPage === 1}
+                      onClick={() => setCurrentPage(currentPage - 1)}
+                    >
+                      Previous
+                    </button>
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      let pageNum;
+                      if (totalPages <= 5) {
+                        pageNum = i + 1;
+                      } else if (currentPage <= 3) {
+                        pageNum = i + 1;
+                      } else if (currentPage >= totalPages - 2) {
+                        pageNum = totalPages - 4 + i;
+                      } else {
+                        pageNum = currentPage - 2 + i;
+                      }
+                      return (
+                        <button
+                          key={pageNum}
+                          className={`px-4 py-2 rounded ${pageNum === currentPage ? 'bg-purple-600' : 'bg-gray-700'}`}
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </button>
+                      );
+                    })}
+                    <button
+                      className="px-4 py-2 bg-gray-700 rounded disabled:opacity-50"
+                      disabled={currentPage === totalPages}
+                      onClick={() => setCurrentPage(currentPage + 1)}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              )}
+            </>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };
