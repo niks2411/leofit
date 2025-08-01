@@ -107,7 +107,7 @@ const Admin = () => {
   const totalPages = Math.ceil(filteredMessages.length / messagesPerPage);
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 mt-5">
+    <div className="min-h-screen bg-gray-900 text-white p-4 md:p-8 mt-12">
       {!authenticated ? (
         <div className="max-w-md mx-auto mt-20 p-8 bg-gray-800 rounded-lg shadow-lg">
           <div className="text-center mb-6">
