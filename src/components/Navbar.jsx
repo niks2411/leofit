@@ -51,9 +51,18 @@ const Navbar = ({ navItems }) => {
           <Link to="/" className="flex items-center">
             <motion.div
               whileHover={{ scale: 1.05 }}
-              className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent"
+              className="flex items-center space-x-2"
             >
-              Leofitt Global
+              {/* Favicon/Logo Icon */}
+              <img 
+                src="/favicon.png" 
+                alt="Leofitt Global Logo" 
+                className="w-8 h-8 object-contain rounded"
+              />
+              {/* Company Name */}
+              <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent">
+                Leofitt Global
+              </div>
             </motion.div>
           </Link>
 
