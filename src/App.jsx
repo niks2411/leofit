@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion as motion, AnimatePresence, useInView } from 'framer-motion';
 import { ArrowRight, Heart, Users, TrendingUp, Shield, Zap, Award, X, Calendar, Clock } from 'lucide-react';
 import Navbar from './components/Navbar';
@@ -9,6 +9,16 @@ import Contact from './pages/Contact';
 import Location from './pages/Location';
 import Admin from './pages/admin';
 
+// Scroll to top component
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
@@ -33,10 +43,9 @@ function App() {
   
   // Check if programs are in view
   const isInView = [];
-for (let i = 0; i < programRefs.current.length; i++) {
-  isInView.push(useInView(programRefs.current[i], { once: true, margin: "0px 0px -100px 0px" }));
-}
-
+  for (let i = 0; i < programRefs.current.length; i++) {
+    isInView.push(useInView(programRefs.current[i], { once: true, margin: "0px 0px -100px 0px" }));
+  }
 
   const benefits = [
     {
@@ -230,6 +239,9 @@ for (let i = 0; i < programRefs.current.length; i++) {
   return (
     <Router>
       <div className="min-h-screen bg-gray-900 flex flex-col">
+        {/* Scroll to top on route change */}
+        <ScrollToTop />
+        
         {/* Navbar */}
         <Navbar navItems={navItems} />
         

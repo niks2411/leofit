@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 // Import your images
@@ -9,16 +9,35 @@ import mainpic from '../images/mainpic.jpg';
 
 const Location = () => {
   const [current, setCurrent] = useState(0);
+  const [autoScroll, setAutoScroll] = useState(true);
   const images = [mainpic, leofitt, treadmil, leg];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
-    }, 5000);
-    return () => clearInterval(interval);
+  // Memoize the next slide function
+  const nextSlide = useCallback(() => {
+    setCurrent((prev) => (prev + 1) % images.length);
   }, [images.length]);
 
-  const goTo = (idx) => setCurrent(idx);
+  // Memoize the previous slide function
+  const prevSlide = useCallback(() => {
+    setCurrent((prev) => (prev - 1 + images.length) % images.length);
+  }, [images.length]);
+
+  useEffect(() => {
+    let interval;
+    if (autoScroll) {
+      interval = setInterval(nextSlide, 5000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [autoScroll, nextSlide]);
+
+  const goTo = (idx) => {
+    setCurrent(idx);
+    // When manually navigating, pause auto-scroll briefly
+    setAutoScroll(false);
+    setTimeout(() => setAutoScroll(true), 10000); // Resume after 10 seconds
+  };
 
   return (
     <div className="min-h-screen pt-24 bg-gray-900">
@@ -39,6 +58,27 @@ const Location = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/30 to-transparent" />
               </motion.div>
             ))}
+            
+            {/* Navigation arrows */}
+            <button 
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full z-10 transition-all duration-300"
+              aria-label="Previous image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            
+            <button 
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-3 rounded-full z-10 transition-all duration-300"
+              aria-label="Next image"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
             
             {/* Overlay Content */}
             <div className="absolute inset-0 flex items-end pb-16 md:pb-24 px-8">
