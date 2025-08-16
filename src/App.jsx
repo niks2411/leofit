@@ -23,6 +23,78 @@ function ScrollToTop() {
   return null;
 }
 
+// Animated Counter Component
+const AnimatedCounter = ({ value, duration = 2 }) => {
+  const [count, setCount] = useState(0);
+  const ref = useRef();
+  const observer = useRef();
+
+  useEffect(() => {
+    observer.current = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          startAnimation();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (ref.current) {
+      observer.current.observe(ref.current);
+    }
+
+    return () => {
+      if (observer.current && ref.current) {
+        observer.current.unobserve(ref.current);
+      }
+    };
+  }, []);
+
+  const startAnimation = () => {
+    let start = 0;
+    const end = typeof value === 'string' ? parseFloat(value.replace(/[^0-9.]/g, '')) || 0 : value;
+    const increment = end / (duration * 60); // 60fps
+
+    const timer = setInterval(() => {
+      start += increment;
+      if (start >= end) {
+        setCount(end);
+        clearInterval(timer);
+      } else {
+        setCount(start);
+      }
+    }, 1000 / 60);
+
+    return () => clearInterval(timer);
+  };
+
+  const formatNumber = (num) => {
+    if (typeof value === 'string') {
+      if (value.includes('K')) {
+        return `${Math.floor(num)}K+`;
+      } else if (value.includes('%')) {
+        return `${Math.floor(num)}%`;
+      } else if (value.includes('+')) {
+        return `${Math.floor(num)}+`;
+      } else if (value.includes('/')) {
+        return value; // Return original for values like "24/7"
+      }
+    }
+    return Math.floor(num);
+  };
+
+  return (
+    <motion.span 
+      ref={ref}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
+      viewport={{ once: true }}
+    >
+      {formatNumber(count)}
+    </motion.span>
+  );
+};
+
 function App() {
   const [showPopup, setShowPopup] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState(null);
@@ -384,13 +456,13 @@ function App() {
                         className="text-center mb-16"
                       >
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                          Benefits of{' '}
+                          Transform Your Workplace With{' '}
                           <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                            Corporate Wellness
+                            Wellness Benefits
                           </span>
                         </h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                          Discover how our wellness packages can transform your workplace culture and boost employee satisfaction
+                          Our comprehensive wellness programs deliver measurable improvements across all aspects of your organization
                         </p>
                       </motion.div>
 
@@ -398,27 +470,77 @@ function App() {
                         variants={containerVariants}
                         initial="hidden"
                         whileInView="visible"
-                        viewport={{ once: true }}
+                        viewport={{ once: true, margin: "-100px" }}
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                       >
                         {benefits.map((benefit, index) => (
                           <motion.div
                             key={index}
                             variants={itemVariants}
-                            whileHover={{ y: -10, scale: 1.02 }}
-                            className="group p-8 rounded-2xl bg-gray-800 hover:shadow-xl transition-all duration-500"
+                            whileHover={{ 
+                              y: -10, 
+                              scale: 1.03,
+                              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                            }}
+                            transition={{ duration: 0.3, ease: "easeOut" }}
+                            className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-850 hover:from-gray-750 hover:to-gray-800 border border-gray-700 hover:border-purple-500/30 transition-all duration-500 overflow-hidden"
                           >
-                            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
+                            {/* Gradient highlight on hover */}
+                            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            
+                            {/* Animated icon container */}
+                            <motion.div 
+                              className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-6 group-hover:rotate-[15deg] transition-transform duration-500"
+                              whileHover={{ scale: 1.1 }}
+                            >
                               <benefit.icon className="w-8 h-8 text-white" />
+                            </motion.div>
+                            
+                            {/* Content */}
+                            <div className="relative z-10">
+                              <h3 className="text-xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors duration-300">
+                                {benefit.title}
+                              </h3>
+                              <p className="text-gray-300 group-hover:text-gray-100 transition-colors duration-300">
+                                {benefit.description}
+                              </p>
                             </div>
-                            <h3 className="text-xl font-bold mb-4 text-white">
-                              {benefit.title}
-                            </h3>
-                            <p className="text-gray-300">
-                              {benefit.description}
-                            </p>
+                            
+                            {/* Hidden arrow that appears on hover */}
+                            <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+                              <ArrowRight className="w-5 h-5 text-purple-400" />
+                            </div>
                           </motion.div>
                         ))}
+                      </motion.div>
+
+                      {/* Stats ribbon below benefits */}
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.8, delay: 0.2 }}
+                        viewport={{ once: true }}
+                        className="mt-16 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-xl p-6 border border-purple-500/20"
+                      >
+                        <div className="text-center">
+                          <p className="text-lg text-purple-300 mb-2">
+                            Companies using our programs report:
+                          </p>
+                          <div className="flex flex-wrap justify-center gap-6">
+                            <div className="flex items-center">
+                              <Check className="w-5 h-5 text-green-400 mr-2" />
+                              <span className="text-white">32% reduction in sick days</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Check className="w-5 h-5 text-green-400 mr-2" />
+                              <span className="text-white">28% increase in productivity</span>
+                            </div>
+                            <div className="flex items-center">
+                              <Check className="w-5 h-5 text-green-400 mr-2" />
+                              <span className="text-white">41% higher employee retention</span>
+                            </div>
+                          </div>
+                        </div>
                       </motion.div>
                     </div>
                   </section>
@@ -436,7 +558,9 @@ function App() {
                             viewport={{ once: true }}
                             className="p-6"
                           >
-                            <p className="text-4xl font-bold text-purple-400 mb-2">{stat.number}</p>
+                            <p className="text-4xl font-bold text-purple-400 mb-2">
+                              <AnimatedCounter value={stat.number} duration={2} />
+                            </p>
                             <p className="text-lg text-gray-300">{stat.label}</p>
                           </motion.div>
                         ))}
