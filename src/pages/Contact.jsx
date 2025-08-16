@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
-import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Users, Award } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, Clock, Users, Award, X } from 'lucide-react';
 import { serverTimestamp } from 'firebase/firestore';
+import { PackageContext } from '../App';
+
 const Contact = () => {
+  const { customSelections, setCustomSelections } = useContext(PackageContext);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -16,15 +19,19 @@ const Contact = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const programs = [
-    'CPR Certification',
-    'Cervical Health & Posture Sessions',
-    'HIIT for Teams',
-    'Stress Management Workshops',
-    'Nutrition Planning',
-    'Fitness Challenges',
-    'Custom Program'
-  ];
+  // const programs = [
+  //   'Bronze Package',
+  //   'Silver Package',
+  //   'Gold Package',
+  //   'Custom Package',
+  //   'CPR Certification',
+  //   'Cervical Health & Posture Sessions',
+  //   'HIIT for Teams',
+  //   'Stress Management Workshops',
+  //   'Nutrition Planning',
+  //   'Fitness Challenges',
+  //   'Other Program'
+  // ];
 
   const contactInfo = [
     {
@@ -70,8 +77,8 @@ const Contact = () => {
     setIsSubmitting(true);
     
     try {
-      // Save to Firebase without date field
-      await addDoc(collection(db, 'contacts'), {
+      // Prepare data to save to Firebase
+      const contactData = {
         name: formData.name,
         email: formData.email,
         company: formData.company,
@@ -79,7 +86,18 @@ const Contact = () => {
         message: formData.message,
         program: formData.program,
         timestamp: serverTimestamp(),
-      });
+      };
+
+      // Add package selections if they exist
+      if (customSelections) {
+        contactData.selectedPackage = customSelections.package.title;
+        contactData.selectedAddOns = customSelections.addOns.map(addOn => ({
+          title: addOn.title,
+          description: addOn.description
+        }));
+      }
+
+      await addDoc(collection(db, 'contacts'), contactData);
       
       setIsSubmitted(true);
     } catch (error) {
@@ -99,12 +117,17 @@ const Contact = () => {
           message: '',
           program: ''
         });
+        setCustomSelections(null); // Clear package selections after submission
       }, 3000);
     }
   };
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+  };
+
+  const removePackageSelection = () => {
+    setCustomSelections(null);
   };
 
   const containerVariants = {
@@ -174,6 +197,50 @@ const Contact = () => {
                   Fill out the form below and we'll get back to you within 24 hours.
                 </p>
               </motion.div>
+
+              {/* Selected Package Display */}
+              {customSelections && (
+                <motion.div 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mb-6 p-4 bg-gray-700 rounded-lg border border-purple-500 relative"
+                >
+                  <button
+                    onClick={removePackageSelection}
+                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-600 transition-colors"
+                  >
+                    <X className="w-4 h-4 text-gray-300" />
+                  </button>
+                  
+                  <h3 className="text-lg font-bold text-white mb-2">
+                    Your Selected Package:
+                  </h3>
+                  <p className="text-purple-400 font-semibold">
+                    {customSelections.package.title}
+                  </p>
+                  
+                  {customSelections.addOns.length > 0 && (
+                    <div className="mt-3">
+                      <h4 className="text-sm font-semibold text-white mb-1">
+                        Add-On Services:
+                      </h4>
+                      <ul className="space-y-1">
+                        {customSelections.addOns.map((addOn, index) => (
+                          <li key={index} className="text-gray-300 text-sm">
+                            • {addOn.title}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  <div className="mt-3 pt-2 border-t border-gray-600">
+                    <p className="text-sm text-gray-400">
+                      We'll provide a custom quote based on your selections and requirements.
+                    </p>
+                  </div>
+                </motion.div>
+              )}
 
               <motion.div variants={itemVariants}>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -272,24 +339,9 @@ const Contact = () => {
                     </div>
                   </div>
 
-                  <div className="relative">
-                    <select
-                      id="program"
-                      value={formData.program}
-                      onChange={(e) => handleInputChange('program', e.target.value)}
-                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105"
-                      required
-                    >
-                      <option value="">Select a program</option>
-                      {programs.map((program, index) => (
-                        <option key={index} value={program}>
-                          {program}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                 
 
-                  <div className="relative">
+                  {/* <div className="relative">
                     <textarea
                       id="message"
                       value={formData.message}
@@ -308,9 +360,9 @@ const Contact = () => {
                         color: formData.message ? '#8b5cf6' : undefined
                       }}
                     >
-                      Tell us about your needs *
+                      Select Your needs from Home page
                     </label>
-                  </div>
+                  </div> */}
 
                   <motion.button
                     type="submit"
@@ -340,7 +392,7 @@ const Contact = () => {
               </motion.div>
             </motion.div>
 
-            {/* Contact Info & Map */}
+            {/* Contact Info & Features */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
@@ -409,26 +461,6 @@ const Contact = () => {
                   ))}
                 </div>
               </motion.div>
-
-              {/* Map Placeholder */}
-              {/* <motion.div variants={itemVariants}>
-                <h3 className="text-2xl font-bold mb-6 text-white">
-                  Visit Our Office
-                </h3>
-                <div className="h-64 rounded-2xl overflow-hidden bg-gray-200 relative">
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-center">
-                      <MapPin className="w-12 h-12 mx-auto mb-4 text-gray-400" />
-                      <p className="text-gray-500">
-                        Interactive Map Coming Soon
-                      </p>
-                      <p className="text-sm text-gray-400 mt-2">
-                        5N/44A, Bk Chowk, Block N, NIT 5, Near Btw, BK Chowk-121001
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </motion.div> */}
             </motion.div>
           </div>
         </div>
@@ -437,4 +469,4 @@ const Contact = () => {
   );
 };
 
-export default Contact; 
+export default Contact;
