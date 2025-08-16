@@ -50,7 +50,7 @@ const Admin = () => {
         message.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         message.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
         message.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        message.program?.toLowerCase().includes(searchTerm.toLowerCase())
+        message.selectedPackage?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredMessages(filtered);
     setCurrentPage(1);
@@ -67,8 +67,13 @@ const Admin = () => {
     }
   };
 
+  const formatAddOns = (selectedAddOns) => {
+    if (!selectedAddOns || selectedAddOns.length === 0) return '';
+    return selectedAddOns.map(addon => addon.title || addon).join('; ');
+  };
+
   const exportToCSV = () => {
-    const headers = ['Name', 'Email', 'Phone', 'Company', 'Program', 'Message', 'Date'];
+    const headers = ['Name', 'Email', 'Phone', 'Company', 'Selected Package', 'Selected Add-ons', 'Date'];
     const csvContent = [
       headers.join(','),
       ...filteredMessages.map(msg => 
@@ -77,8 +82,8 @@ const Admin = () => {
           `"${msg.email || ''}"`,
           `"${msg.phone || ''}"`,
           `"${msg.company || ''}"`,
-          `"${msg.program || ''}"`,
-          `"${msg.message?.replace(/"/g, '""') || ''}"`,
+          `"${msg.selectedPackage || ''}"`,
+          `"${formatAddOns(msg.selectedAddOns)}"`,
           `"${msg.timestamp.toLocaleString()}"` // Updated to use timestamp
         ].join(',')
       )
@@ -164,7 +169,7 @@ const Admin = () => {
             <Search className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search by name, email, company or program..."
+              placeholder="Search by name, email, company or package..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-2 bg-gray-800 rounded text-white"
@@ -191,8 +196,8 @@ const Admin = () => {
                       <th className="px-4 py-3 text-left">Email</th>
                       <th className="px-4 py-3 text-left">Phone</th>
                       <th className="px-4 py-3 text-left">Company</th>
-                      <th className="px-4 py-3 text-left">Program</th>
-                      <th className="px-4 py-3 text-left min-w-[200px]">Message</th>
+                      <th className="px-4 py-3 text-left min-w-[150px]">Package</th>
+                      <th className="px-4 py-3 text-left min-w-[200px]">Add-ons</th>
                       <th className="px-4 py-3 text-left min-w-[180px]">Date</th>
                     </tr>
                   </thead>
@@ -204,9 +209,22 @@ const Admin = () => {
                           <td className="px-4 py-3 text-purple-400 break-all">{msg.email || '-'}</td>
                           <td className="px-4 py-3">{msg.phone || '-'}</td>
                           <td className="px-4 py-3">{msg.company || '-'}</td>
-                          <td className="px-4 py-3">{msg.program || '-'}</td>
-                          <td className="px-4 py-3 max-w-xs truncate" title={msg.message}>
-                            {msg.message || '-'}
+                          <td className="px-4 py-3 font-medium text-blue-400">{msg.selectedPackage || '-'}</td>
+                          <td className="px-4 py-3 max-w-xs">
+                            {msg.selectedAddOns && msg.selectedAddOns.length > 0 ? (
+                              <div className="space-y-1">
+                                {msg.selectedAddOns.map((addon, index) => (
+                                  <div key={index} className="text-sm bg-gray-700 px-2 py-1 rounded">
+                                    <div className="font-medium text-green-400">{addon.title}</div>
+                                    {addon.description && (
+                                      <div className="text-gray-300 text-xs">{addon.description}</div>
+                                    )}
+                                  </div>
+                                ))}
+                              </div>
+                            ) : (
+                              '-'
+                            )}
                           </td>
                           <td className="px-4 py-3">
                             {msg.timestamp.toLocaleString('en-US', {
