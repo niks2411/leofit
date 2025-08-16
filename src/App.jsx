@@ -2,15 +2,199 @@ import React, { useState, useEffect, useRef } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Heart, Users, TrendingUp, Shield, Zap, Award, X, Check } from 'lucide-react';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import About from './pages/About';
-import Contact from './pages/Contact';
-import Location from './pages/Location';
-import Admin from './pages/admin';
 
 // Create a context to share package selection across components
 export const PackageContext = React.createContext();
+
+// Custom hook for animated counter
+const useAnimatedCounter = (targetValue, duration = 2000, startAnimation = false) => {
+  const [count, setCount] = useState(0);
+  const countRef = useRef(0);
+
+  useEffect(() => {
+    if (!startAnimation) return;
+
+    const startTime = Date.now();
+    const endTime = startTime + duration;
+
+    const timer = setInterval(() => {
+      const now = Date.now();
+      const progress = Math.min((now - startTime) / duration, 1);
+      
+      // Cubic easing function for smooth animation
+      const easeOutCubic = 1 - Math.pow(1 - progress, 3);
+      const currentCount = Math.floor(easeOutCubic * targetValue);
+      
+      countRef.current = currentCount;
+      setCount(currentCount);
+
+      if (progress === 1) {
+        clearInterval(timer);
+        setCount(targetValue);
+      }
+    }, 16); // ~60fps
+
+    return () => clearInterval(timer);
+  }, [targetValue, duration, startAnimation]);
+
+  return count;
+};
+
+// AnimatedCounter component
+const AnimatedCounter = ({ value, duration = 2000, startAnimation = false }) => {
+  // Parse the value to extract number and suffix
+  const parseValue = (val) => {
+    const str = val.toString();
+    const numberMatch = str.match(/(\d+)/);
+    const number = numberMatch ? parseInt(numberMatch[1]) : 0;
+    const suffix = str.replace(number.toString(), '');
+    return { number, suffix };
+  };
+
+  const { number, suffix } = parseValue(value);
+  const animatedNumber = useAnimatedCounter(number, duration, startAnimation);
+
+  return (
+    <span>
+      {animatedNumber}
+      {suffix}
+    </span>
+  );
+};
+
+// Intersection Observer hook
+const useIntersectionObserver = (options = {}) => {
+  const [isIntersecting, setIsIntersecting] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsIntersecting(entry.isIntersecting);
+      },
+      {
+        threshold: 0.3,
+        ...options
+      }
+    );
+
+    observer.observe(element);
+
+    return () => observer.unobserve(element);
+  }, [options]);
+
+  return [ref, isIntersecting];
+};
+
+// Simple Navbar component
+const Navbar = ({ navItems }) => {
+  const location = useLocation();
+  
+  return (
+    <nav className="bg-gray-800 shadow-lg sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center py-4">
+          <Link to="/" className="text-2xl font-bold text-white">
+            WellnessCorp
+          </Link>
+          <div className="flex space-x-6">
+            {navItems.map((item) => (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`px-3 py-2 rounded-md transition-colors ${
+                  location.pathname === item.path
+                    ? 'text-purple-400'
+                    : 'text-gray-300 hover:text-white'
+                }`}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};
+
+// Simple Footer component
+const Footer = () => {
+  return (
+    <footer className="bg-gray-900 text-white py-8">
+      <div className="max-w-7xl mx-auto px-4 text-center">
+        <p>&copy; 2025 WellnessCorp. All rights reserved.</p>
+      </div>
+    </footer>
+  );
+};
+
+// Simple page components
+const About = () => (
+  <div className="min-h-screen bg-gray-900 text-white py-20">
+    <div className="max-w-4xl mx-auto px-4">
+      <h1 className="text-4xl font-bold mb-6">About Us</h1>
+      <p className="text-xl text-gray-300">
+        We are dedicated to transforming workplace wellness through innovative programs and expert guidance.
+      </p>
+    </div>
+  </div>
+);
+
+const Contact = () => (
+  <div className="min-h-screen bg-gray-900 text-white py-20">
+    <div className="max-w-4xl mx-auto px-4">
+      <h1 className="text-4xl font-bold mb-6">Contact Us</h1>
+      <p className="text-xl text-gray-300 mb-8">
+        Ready to start your wellness journey? Get in touch with us today.
+      </p>
+      <div className="bg-gray-800 p-8 rounded-lg">
+        <form className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium mb-2">Company Name</label>
+            <input type="text" className="w-full p-3 bg-gray-700 rounded-lg text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Email</label>
+            <input type="email" className="w-full p-3 bg-gray-700 rounded-lg text-white" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium mb-2">Message</label>
+            <textarea rows="4" className="w-full p-3 bg-gray-700 rounded-lg text-white"></textarea>
+          </div>
+          <button className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg font-semibold">
+            Send Message
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+);
+
+const Location = () => (
+  <div className="min-h-screen bg-gray-900 text-white py-20">
+    <div className="max-w-4xl mx-auto px-4">
+      <h1 className="text-4xl font-bold mb-6">Our Locations</h1>
+      <p className="text-xl text-gray-300">
+        We serve companies across multiple locations with our comprehensive wellness programs.
+      </p>
+    </div>
+  </div>
+);
+
+const Admin = () => (
+  <div className="min-h-screen bg-gray-900 text-white py-20">
+    <div className="max-w-4xl mx-auto px-4">
+      <h1 className="text-4xl font-bold mb-6">Admin Dashboard</h1>
+      <p className="text-xl text-gray-300">
+        Administrative access for managing wellness programs and client data.
+      </p>
+    </div>
+  </div>
+);
 
 // Scroll to top component
 function ScrollToTop() {
@@ -30,17 +214,15 @@ function App() {
   const [selectedAddOns, setSelectedAddOns] = useState([]);
   const [customSelections, setCustomSelections] = useState(null);
   
+  // Intersection observer for stats animation
+  const [statsRef, isStatsVisible] = useIntersectionObserver();
+  
   useEffect(() => {
-    const hasSeenPopup = localStorage.getItem('hasSeenPopup');
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 3000);
 
-    if (!hasSeenPopup) {
-      const timer = setTimeout(() => {
-        setShowPopup(true);
-        localStorage.setItem('hasSeenPopup', 'true');
-      }, 3000);
-
-      return () => clearTimeout(timer);
-    }
+    return () => clearTimeout(timer);
   }, []);
 
   const benefits = [
@@ -77,10 +259,10 @@ function App() {
   ];
 
   const stats = [
-    { number: '500+', label: 'Companies Served' },
-    { number: '50K+', label: 'Employees Trained' },
-    { number: '95%', label: 'Satisfaction Rate' },
-    { number: '24/7', label: 'Support Available' }
+    { number: '500+', label: 'Companies Served', value: 500 },
+    { number: '50K+', label: 'Employees Trained', value: 50000 },
+    { number: '95%', label: 'Satisfaction Rate', value: 95 },
+    { number: '24/7', label: 'Support Available', value: 24 }
   ];
  
   const packages = [
@@ -374,57 +556,107 @@ function App() {
                   </section>
 
                   {/* Benefits Section */}
-                  <section className="py-20 bg-gray-900">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                      <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8 }}
-                        viewport={{ once: true }}
-                        className="text-center mb-16"
-                      >
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                          Benefits of{' '}
-                          <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                            Corporate Wellness
-                          </span>
-                        </h2>
-                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                          Discover how our wellness packages can transform your workplace culture and boost employee satisfaction
-                        </p>
-                      </motion.div>
+                 {/* Benefits Section */}
+<section className="py-20 bg-gray-900">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className="text-center mb-16"
+    >
+      <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+        Transform Your Workplace With{' '}
+        <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Wellness Benefits
+        </span>
+      </h2>
+      <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+        Our comprehensive wellness programs deliver measurable improvements across all aspects of your organization
+      </p>
+    </motion.div>
 
-                      <motion.div
-                        variants={containerVariants}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                      >
-                        {benefits.map((benefit, index) => (
-                          <motion.div
-                            key={index}
-                            variants={itemVariants}
-                            whileHover={{ y: -10, scale: 1.02 }}
-                            className="group p-8 rounded-2xl bg-gray-800 hover:shadow-xl transition-all duration-500"
-                          >
-                            <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-6 group-hover:scale-110 transition-transform duration-300">
-                              <benefit.icon className="w-8 h-8 text-white" />
-                            </div>
-                            <h3 className="text-xl font-bold mb-4 text-white">
-                              {benefit.title}
-                            </h3>
-                            <p className="text-gray-300">
-                              {benefit.description}
-                            </p>
-                          </motion.div>
-                        ))}
-                      </motion.div>
-                    </div>
-                  </section>
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-100px" }}
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+    >
+      {benefits.map((benefit, index) => (
+        <motion.div
+          key={index}
+          variants={itemVariants}
+          whileHover={{ 
+            y: -10, 
+            scale: 1.03,
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+          }}
+          transition={{ duration: 0.3, ease: "easeOut" }}
+          className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-850 hover:from-gray-750 hover:to-gray-800 border border-gray-700 hover:border-purple-500/30 transition-all duration-500 overflow-hidden"
+        >
+          {/* Gradient highlight on hover */}
+          <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+          
+          {/* Animated icon container */}
+          <motion.div 
+            className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-6 group-hover:rotate-[15deg] transition-transform duration-500"
+            whileHover={{ scale: 1.1 }}
+          >
+            <benefit.icon className="w-8 h-8 text-white" />
+          </motion.div>
+          
+          {/* Content */}
+          <div className="relative z-10">
+            <h3 className="text-xl font-bold mb-4 text-white group-hover:text-purple-300 transition-colors duration-300">
+              {benefit.title}
+            </h3>
+            <p className="text-gray-300 group-hover:text-gray-100 transition-colors duration-300">
+              {benefit.description}
+            </p>
+          </div>
+          
+          {/* Hidden arrow that appears on hover */}
+          <div className="absolute bottom-6 right-6 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+            <ArrowRight className="w-5 h-5 text-purple-400" />
+          </div>
+        </motion.div>
+      ))}
+    </motion.div>
 
-                  {/* Stats Section */}
-                  <section className="py-16 bg-gray-800">
+    {/* Stats ribbon below benefits */}
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      viewport={{ once: true }}
+      className="mt-16 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-xl p-6 border border-purple-500/20"
+    >
+      <div className="text-center">
+        <p className="text-lg text-purple-300 mb-2">
+          Companies using our programs report:
+        </p>
+        <div className="flex flex-wrap justify-center gap-6">
+          <div className="flex items-center">
+            <Check className="w-5 h-5 text-green-400 mr-2" />
+            <span className="text-white">32% reduction in sick days</span>
+          </div>
+          <div className="flex items-center">
+            <Check className="w-5 h-5 text-green-400 mr-2" />
+            <span className="text-white">28% increase in productivity</span>
+          </div>
+          <div className="flex items-center">
+            <Check className="w-5 h-5 text-green-400 mr-2" />
+            <span className="text-white">41% higher employee retention</span>
+          </div>
+        </div>
+      </div>
+    </motion.div>
+  </div>
+</section>
+                  {/* Animated Stats Section */}
+                  <section ref={statsRef} className="py-16 bg-gray-800">
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {stats.map((stat, index) => (
@@ -436,7 +668,13 @@ function App() {
                             viewport={{ once: true }}
                             className="p-6"
                           >
-                            <p className="text-4xl font-bold text-purple-400 mb-2">{stat.number}</p>
+                            <p className="text-4xl font-bold text-purple-400 mb-2">
+                              <AnimatedCounter 
+                                value={stat.number} 
+                                duration={2000 + index * 200}
+                                startAnimation={isStatsVisible}
+                              />
+                            </p>
                             <p className="text-lg text-gray-300">{stat.label}</p>
                           </motion.div>
                         ))}
