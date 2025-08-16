@@ -378,72 +378,117 @@ function App() {
                   </section>
 
                   {/* Packages Section */}
-                  <section id="packages-section" className="py-20 bg-gray-800">
-                    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                      <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                          Corporate Wellness <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Packages</span>
-                        </h2>
-                        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                          Choose the perfect wellness package for your organization's needs
-                        </p>
+          {/* Packages Section */}
+<section id="packages-section" className="py-16 bg-gray-900">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <motion.h2 
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+        viewport={{ once: true }}
+        className="text-3xl md:text-4xl font-bold mb-4 text-white"
+      >
+        Corporate Wellness <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Packages</span>
+      </motion.h2>
+      <motion.p
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+        viewport={{ once: true }}
+        className="text-lg text-gray-300 max-w-2xl mx-auto"
+      >
+        Tailored solutions for organizations of all sizes
+      </motion.p>
+    </div>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {packages.map((pkg, index) => (
+        <motion.div 
+          key={pkg.id}
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: index * 0.1 }}
+          viewport={{ once: true }}
+          className="relative"
+          whileHover={{ y: -5 }}
+        >
+          {pkg.mostPopular && (
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full z-10 shadow-md">
+              MOST POPULAR
+            </div>
+          )}
+          <div className={`h-full bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-700 hover:border-purple-500/30 ${pkg.mostPopular ? 'ring-1 ring-purple-500' : ''}`}>
+            <div className="p-6 h-full flex flex-col">
+              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4 shadow-md">
+                <pkg.icon className="w-5 h-5 text-white" />
+              </div>
+              
+              <div className="mb-4">
+                <h3 className="text-xl font-bold mb-1 text-white">
+                  {pkg.title}
+                </h3>
+                <p className="text-gray-300 text-sm">
+                  {pkg.description}
+                </p>
+              </div>
+              
+              <div className="mb-6 flex-grow">
+                <div className="h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent my-3"></div>
+                <h4 className="text-md font-semibold text-white mb-2">Includes:</h4>
+                <ul className="space-y-2">
+                  {pkg.features.map((feature, i) => (
+                    <li key={i} className="flex items-start">
+                      <div className="flex-shrink-0 mt-0.5">
+                        <div className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center">
+                          <Check className="w-2.5 h-2.5 text-purple-400" />
+                        </div>
                       </div>
-                      
-                      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                        {packages.map((pkg, index) => (
-                          <motion.div 
-                            key={pkg.id}
-                            initial="hidden"
-                            animate="visible"
-                            variants={packageVariants}
-                            transition={{ delay: index * 0.1 }}
-                            className="relative"
-                          >
-                            {pkg.mostPopular && (
-                              <div className="absolute top-0 right-0 bg-gradient-to-r from-purple-600 to-pink-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg rounded-tr-lg z-10">
-                                MOST POPULAR
-                              </div>
-                            )}
-                            <div className={`h-full bg-gray-800 rounded-2xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden ${pkg.mostPopular ? 'ring-2 ring-purple-500' : ''}`}>
-                              <div className="p-8 h-full flex flex-col">
-                                <div className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-6">
-                                  <pkg.icon className="w-8 h-8 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold mb-4 text-white">
-                                  {pkg.title}
-                                </h3>
-                                <p className="text-gray-300 mb-6">
-                                  {pkg.description}
-                                </p>
-                                
-                                <div className="mb-8 flex-grow">
-                                  <h4 className="text-lg font-semibold text-white mb-3">Includes:</h4>
-                                  <ul className="space-y-2">
-                                    {pkg.features.map((feature, i) => (
-                                      <li key={i} className="flex items-start">
-                                        <svg className="flex-shrink-0 w-5 h-5 text-purple-500 mt-0.5 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                        </svg>
-                                        <span className="text-gray-300">{feature}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                                
-                                <button
-                                  onClick={() => handleStartCustomization(pkg)}
-                                  className={`mt-auto w-full py-3 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300 flex items-center justify-center ${pkg.mostPopular ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:shadow-purple-500/25' : 'bg-gray-700 hover:bg-gray-600'}`}
-                                >
-                                  Customize Package
-                                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                                </button>
-                              </div>
-                            </div>
-                          </motion.div>
-                        ))}
-                      </div>
-                    </div>
-                  </section>
+                      <span className="ml-2.5 text-gray-300 text-sm">{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <motion.button
+                onClick={() => handleStartCustomization(pkg)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`mt-auto w-full py-2.5 text-white text-sm font-semibold rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 ${pkg.mostPopular ? 
+                  'bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-purple-500/20 shadow-md' : 
+                  'bg-gray-700 hover:bg-gray-600 border border-gray-600'}`}
+              >
+                <span>Customize Package</span>
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform duration-300" />
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+      ))}
+    </div>
+
+    {/* Additional Info */}
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, delay: 0.3 }}
+      viewport={{ once: true }}
+      className="mt-10 text-center"
+    >
+      <div className="inline-flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex items-center text-gray-400 text-sm">
+          <Shield className="w-4 h-4 mr-2 text-purple-400" />
+          All packages include 24/7 support
+        </div>
+        <div className="hidden sm:block w-px h-4 bg-gray-600"></div>
+        <div className="flex items-center text-gray-400 text-sm">
+          <Users className="w-4 h-4 mr-2 text-purple-400" />
+          Scalable for teams of any size
+        </div>
+      </div>
+    </motion.div>
+  </div>
+</section>
 
                   {/* Benefits Section */}
                   <section className="py-20 bg-gray-900">
