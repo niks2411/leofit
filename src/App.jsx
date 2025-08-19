@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Heart, Users, TrendingUp, Shield, Zap, Award, X, Check } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Location from './pages/Location';
@@ -12,12 +13,21 @@ import Admin from './pages/admin';
 // Create a context to share package selection across components
 export const PackageContext = React.createContext();
 
-// Scroll to top component
+// Enhanced Scroll to top component
 function ScrollToTop() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Scroll to top immediately when route changes
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'instant'
+    });
+    
+    // Also ensure document body is scrolled to top
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
   }, [pathname]);
 
   return null;
@@ -101,6 +111,7 @@ function App() {
   const [showCustomizeModal, setShowCustomizeModal] = useState(false);
   const [selectedAddOns, setSelectedAddOns] = useState([]);
   const [customSelections, setCustomSelections] = useState(null);
+  const videoRef = useRef(null);
   
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem('hasSeenPopup');
@@ -113,6 +124,40 @@ function App() {
 
       return () => clearTimeout(timer);
     }
+  }, []);
+
+  // Simple video handling for all browsers
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    console.log('Initializing background video...');
+    
+    const playVideo = async () => {
+      try {
+        await video.play();
+        console.log('Video playing successfully');
+      } catch (e) {
+        console.log('Autoplay prevented:', e.name);
+        // Video will still be visible, just not auto-playing
+      }
+    };
+    
+    // Multiple event listeners for better compatibility
+    video.addEventListener('loadeddata', playVideo);
+    video.addEventListener('canplay', playVideo);
+    
+    // Force load
+    video.load();
+    
+    // Try to play with delays for different browsers
+    setTimeout(playVideo, 500);
+    setTimeout(playVideo, 2000);
+    
+    return () => {
+      video.removeEventListener('loadeddata', playVideo);
+      video.removeEventListener('canplay', playVideo);
+    };
   }, []);
 
   const benefits = [
@@ -322,61 +367,116 @@ function App() {
             <Routes>
               <Route path="/" element={
                 <>
-                  {/* Hero Section */}
-                  <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-900">
-                    <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-                      <motion.h1
-                        initial={{ opacity: 0, y: 50 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-5xl md:text-7xl font-bold text-white mb-6"
-                      >
-                        Empower Your Workforce with{' '}
-                        <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                          Corporate Wellness
-                        </span>
-                      </motion.h1>
-                      
-                      <motion.p
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-xl md:text-2xl text-gray-300 mb-12 max-w-3xl mx-auto"
-                      >
-                        Transform your workplace culture with our wellness packages designed for modern teams
-                      </motion.p>
-                      
-                      <motion.div
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                        className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-                      >
-                        <motion.button
-                          onClick={scrollToPackages}
-                          whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.3)" }}
-                          whileTap={{ scale: 0.95 }}
-                          className="group relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-2xl transition-all duration-500"
-                        >
-                          <span className="relative z-10 flex items-center">
-                            View Packages
-                            <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
-                          </span>
-                        </motion.button>
-                        
-                        <Link to="/contact">
-                          <motion.button
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                            className="px-8 py-4 text-lg font-semibold text-blue-500 dark:text-white border-2 border-gray-300 dark:border-gray-600 rounded-full hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-300"
-                          >
-                            Get Started
-                          </motion.button>
-                        </Link>
-                      </motion.div>
-                    </div>
-                  </section>
+                 {/* Hero Section */}
+<section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+  {/* Video Background - Fixed positioning */}
+  <video
+    ref={videoRef}
+    src="/video3.mp4"
+    autoPlay
+    muted
+    loop
+    playsInline
+    preload="auto"
+    className="absolute top-0 left-0 w-full h-full object-cover"
+    style={{ zIndex: 1, opacity: 0.9 }}
+    onError={(e) => console.error('Video error:', e)}
+    onLoadedData={() => console.log('Background video loaded successfully')}
+    onPlay={() => console.log('Background video is playing')}
+    onCanPlay={() => {
+      console.log('Video can play');
+      if (videoRef.current) {
+        videoRef.current.play().catch(e => console.log('Play failed:', e));
+      }
+    }}
+    onClick={() => {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.play().then(() => {
+          console.log('Manual video play successful');
+        }).catch(console.log);
+      }
+    }}
+  />
+  
+  {/* Fallback background */}
+  <div className="absolute inset-0 bg-gradient-to-br from-purple-900 via-gray-900 to-pink-900" style={{ zIndex: 0 }}></div>
+  
 
+  
+  {/* Overlay for text readability - temporarily removed */}
+  {/* <div className="absolute inset-0 bg-black bg-opacity-30" style={{ zIndex: 2 }}></div> */}
+  
+  {/* Content container */}
+  <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
+    <motion.h1
+      initial={{ opacity: 0, y: 50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.2 }}
+      className="text-5xl md:text-7xl font-bold text-white mb-6"
+      style={{
+        textShadow: '2px 2px 4px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5)',
+        filter: 'drop-shadow(0 4px 6px rgba(0, 0, 0, 0.7))'
+      }}
+    >
+                        Empower Your Workforce with{' '}
+                        <span className="text-red-500">
+  Corporate Wellness
+</span>
+
+                      </motion.h1>
+    
+    <motion.p
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.4 }}
+      className="text-xl md:text-2xl text-white mb-12 max-w-3xl mx-auto"
+      style={{
+        textShadow: '1px 1px 3px rgba(0,0,0,0.8), 0 0 15px rgba(0,0,0,0.5)',
+        filter: 'drop-shadow(0 2px 4px rgba(0, 0, 0, 0.7))'
+      }}
+    >
+      Transform your workplace culture with our wellness packages designed for modern teams
+    </motion.p>
+    
+    <motion.div
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, delay: 0.6 }}
+      className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+    >
+      <motion.button
+        onClick={scrollToPackages}
+        whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.5)" }}
+        whileTap={{ scale: 0.95 }}
+        className="group relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-2xl transition-all duration-500"
+        style={{
+          boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          backdropFilter: 'blur(10px)'
+        }}
+      >
+        <span className="relative z-10 flex items-center">
+          View Packages
+          <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+        </span>
+      </motion.button>
+      
+      <Link to="/contact">
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="px-8 py-4 text-lg font-semibold text-white border-2 border-white border-opacity-50 rounded-full hover:bg-white hover:bg-opacity-20 transition-all duration-300"
+          style={{
+            boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            backgroundColor: 'rgba(255, 255, 255, 0.1)'
+          }}
+        >
+          Get Started
+        </motion.button>
+      </Link>
+    </motion.div>
+  </div>
+</section>
                   {/* Packages Section */}
           {/* Packages Section */}
 <section id="packages-section" className="py-16 bg-gray-900">
@@ -389,7 +489,10 @@ function App() {
         viewport={{ once: true }}
         className="text-3xl md:text-4xl font-bold mb-4 text-white"
       >
-        Corporate Wellness <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">Packages</span>
+        <span>Corporate Wellness Packages</span>
+                        {/* <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                            Packages
+                          </span> */}
       </motion.h2>
       <motion.p
         initial={{ opacity: 0, y: 20 }}
@@ -501,10 +604,10 @@ function App() {
                         className="text-center mb-16"
                       >
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-                          Transform Your Workplace With{' '}
-                          <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          Transform Your Workplace With Wellness Benefits{' '}
+                          {/* <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                             Wellness Benefits
-                          </span>
+                          </span> */}
                         </h2>
                         <p className="text-xl text-gray-300 max-w-3xl mx-auto">
                           Our comprehensive wellness programs deliver measurable improvements across all aspects of your organization
@@ -652,6 +755,8 @@ function App() {
 
           <Footer />
 
+
+
           {/* Package Customization Modal */}
           <AnimatePresence>
             {showCustomizeModal && (
@@ -725,20 +830,21 @@ function App() {
 
                         <div className="mb-8">
                           <h3 className="text-xl font-semibold text-white mb-4">Add-On Services:</h3>
+                          
                           <div className="space-y-4">
                             {addOnServices.map(addOn => (
                               <div 
                                 key={addOn.id}
-                                className={`p-4 rounded-lg border-2 transition-colors ${selectedAddOns.includes(addOn.id) ? 'border-purple-500 bg-gray-700' : 'border-gray-700 hover:border-gray-600'}`}
+                                className={`p-4 rounded-lg border-2 transition-all duration-300 cursor-pointer hover:shadow-lg ${selectedAddOns.includes(addOn.id) ? 'border-purple-500 bg-gray-700 shadow-lg shadow-purple-500/20' : 'border-gray-700 hover:border-gray-600 hover:bg-gray-750'}`}
+                                onClick={() => toggleAddOn(addOn.id)}
                               >
                                 <div className="flex justify-between items-start">
                                   <div className="flex items-start space-x-3">
-                                    <button
-                                      onClick={() => toggleAddOn(addOn.id)}
-                                      className={`w-5 h-5 rounded flex items-center justify-center mt-1 flex-shrink-0 ${selectedAddOns.includes(addOn.id) ? 'bg-purple-600' : 'border border-gray-500'}`}
+                                    <div
+                                      className={`w-5 h-5 rounded flex items-center justify-center mt-1 flex-shrink-0 transition-colors ${selectedAddOns.includes(addOn.id) ? 'bg-purple-600' : 'border border-gray-500'}`}
                                     >
                                       {selectedAddOns.includes(addOn.id) && <Check className="w-3 h-3 text-white" />}
-                                    </button>
+                                    </div>
                                     <div>
                                       <h4 className="font-semibold text-white">{addOn.title}</h4>
                                       <p className="text-gray-300 text-sm">{addOn.description}</p>

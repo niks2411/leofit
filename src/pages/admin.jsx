@@ -58,7 +58,7 @@ const Admin = () => {
 
   const handlePasswordSubmit = (e) => {
     e.preventDefault();
-    const ADMIN_PASSWORD = "1234";
+    const ADMIN_PASSWORD = "Leofitt@";
     
     if (password === ADMIN_PASSWORD) {
       setAuthenticated(true);

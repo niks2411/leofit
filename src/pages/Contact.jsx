@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { db } from '../firebase';
 import { collection, addDoc } from 'firebase/firestore';
@@ -18,20 +18,26 @@ const Contact = () => {
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [packageSelections, setPackageSelections] = useState(null);
 
-  // const programs = [
-  //   'Bronze Package',
-  //   'Silver Package',
-  //   'Gold Package',
-  //   'Custom Package',
-  //   'CPR Certification',
-  //   'Cervical Health & Posture Sessions',
-  //   'HIIT for Teams',
-  //   'Stress Management Workshops',
-  //   'Nutrition Planning',
-  //   'Fitness Challenges',
-  //   'Other Program'
-  // ];
+  // Effect to handle customSelections changes and ensure proper rendering
+  useEffect(() => {
+    if (customSelections) {
+      // Create a deep copy to avoid reference issues
+      setPackageSelections({
+        ...customSelections,
+        package: { ...customSelections.package },
+        addOns: [...customSelections.addOns]
+      });
+    } else {
+      setPackageSelections(null);
+    }
+  }, [customSelections]);
+
+  // Debug log to track customSelections changes
+  useEffect(() => {
+    console.log('CustomSelections updated:', customSelections);
+  }, [customSelections]);
 
   const contactInfo = [
     {
@@ -88,10 +94,10 @@ const Contact = () => {
         timestamp: serverTimestamp(),
       };
 
-      // Add package selections if they exist
-      if (customSelections) {
-        contactData.selectedPackage = customSelections.package.title;
-        contactData.selectedAddOns = customSelections.addOns.map(addOn => ({
+      // Add package selections if they exist - use local state instead of context
+      if (packageSelections) {
+        contactData.selectedPackage = packageSelections.package.title;
+        contactData.selectedAddOns = packageSelections.addOns.map(addOn => ({
           title: addOn.title,
           description: addOn.description
         }));
@@ -118,6 +124,7 @@ const Contact = () => {
           program: ''
         });
         setCustomSelections(null); // Clear package selections after submission
+        setPackageSelections(null); // Also clear local state
       }, 3000);
     }
   };
@@ -128,6 +135,7 @@ const Contact = () => {
 
   const removePackageSelection = () => {
     setCustomSelections(null);
+    setPackageSelections(null);
   };
 
   const containerVariants = {
@@ -155,7 +163,7 @@ const Contact = () => {
   return (
     <div className="min-h-screen pt-24 bg-gray-900">
       {/* Hero Section */}
-      <section className="relative py-20 overflow-hidden">
+      <section className="relative py-10 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-orange-500/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -164,11 +172,11 @@ const Contact = () => {
             transition={{ duration: 0.8 }}
             className="text-center mb-16"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-              Get In{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+              Get In Touch{' '}
+              {/* <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
                 Touch
-              </span>
+              </span> */}
             </h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Ready to transform your workplace wellness? Let's start the conversation 
@@ -198,49 +206,54 @@ const Contact = () => {
                 </p>
               </motion.div>
 
-              {/* Selected Package Display */}
-              {customSelections && (
-                <motion.div 
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="mb-6 p-4 bg-gray-700 rounded-lg border border-purple-500 relative"
-                >
-                  <button
-                    onClick={removePackageSelection}
-                    className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-600 transition-colors"
+              {/* Selected Package Display - Using AnimatePresence for better transitions */}
+              <AnimatePresence mode="wait">
+                {packageSelections && packageSelections.package && (
+                  <motion.div 
+                    initial={{ opacity: 0, y: -20, height: 0 }}
+                    animate={{ opacity: 1, y: 0, height: 'auto' }}
+                    exit={{ opacity: 0, y: -20, height: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="mb-6 p-4 bg-gray-700 rounded-lg border border-purple-500 relative"
                   >
-                    <X className="w-4 h-4 text-gray-300" />
-                  </button>
-                  
-                  <h3 className="text-lg font-bold text-white mb-2">
-                    Your Selected Package:
-                  </h3>
-                  <p className="text-purple-400 font-semibold">
-                    {customSelections.package.title}
-                  </p>
-                  
-                  {customSelections.addOns.length > 0 && (
-                    <div className="mt-3">
-                      <h4 className="text-sm font-semibold text-white mb-1">
-                        Add-On Services:
-                      </h4>
-                      <ul className="space-y-1">
-                        {customSelections.addOns.map((addOn, index) => (
-                          <li key={index} className="text-gray-300 text-sm">
-                            • {addOn.title}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                  
-                  <div className="mt-3 pt-2 border-t border-gray-600">
-                    <p className="text-sm text-gray-400">
-                      We'll provide a custom quote based on your selections and requirements.
+                    <button
+                      onClick={removePackageSelection}
+                      className="absolute top-2 right-2 p-1 rounded-full hover:bg-gray-600 transition-colors"
+                      aria-label="Remove package selection"
+                    >
+                      <X className="w-4 h-4 text-gray-300" />
+                    </button>
+                    
+                    <h3 className="text-lg font-bold text-white mb-2">
+                      Your Selected Package:
+                    </h3>
+                    <p className="text-purple-400 font-semibold">
+                      {packageSelections.package.title}
                     </p>
-                  </div>
-                </motion.div>
-              )}
+                    
+                    {packageSelections.addOns && packageSelections.addOns.length > 0 && (
+                      <div className="mt-3">
+                        <h4 className="text-sm font-semibold text-white mb-1">
+                          Add-On Services:
+                        </h4>
+                        <ul className="space-y-1">
+                          {packageSelections.addOns.map((addOn, index) => (
+                            <li key={`addon-${index}`} className="text-gray-300 text-sm">
+                              • {addOn.title}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    <div className="mt-3 pt-2 border-t border-gray-600">
+                      <p className="text-sm text-gray-400">
+                        We'll provide a custom quote based on your selections and requirements.
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
 
               <motion.div variants={itemVariants}>
                 <form onSubmit={handleSubmit} className="space-y-6">
@@ -338,31 +351,6 @@ const Contact = () => {
                       </label>
                     </div>
                   </div>
-
-                 
-
-                  {/* <div className="relative">
-                    <textarea
-                      id="message"
-                      value={formData.message}
-                      onChange={(e) => handleInputChange('message', e.target.value)}
-                      rows={5}
-                      className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer resize-none"
-                      placeholder=" "
-                      required
-                    />
-                    <label
-                      htmlFor="message"
-                      className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
-                      style={{
-                        top: formData.message ? '-0.5rem' : '0.75rem',
-                        fontSize: formData.message ? '0.875rem' : '1rem',
-                        color: formData.message ? '#8b5cf6' : undefined
-                      }}
-                    >
-                      Select Your needs from Home page
-                    </label>
-                  </div> */}
 
                   <motion.button
                     type="submit"

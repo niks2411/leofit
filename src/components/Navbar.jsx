@@ -60,9 +60,10 @@ const Navbar = ({ navItems }) => {
                 className="w-8 h-8 object-contain rounded"
               />
               {/* Company Name */}
-              <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent">
-                Leofitt Global
-              </div>
+              <div className="text-2xl font-bold text-white">
+  Leofitt Global
+</div>
+
             </motion.div>
           </Link>
 

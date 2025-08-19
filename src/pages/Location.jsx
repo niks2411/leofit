@@ -89,8 +89,7 @@ const Location = () => {
                 className="max-w-2xl"
               >
                 <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight">
-                  Experience <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Leofitt Global</span>
-                </h1>
+                  Experience Leofitt Global</h1>
                 <p className="text-xl text-gray-300 mb-6">
                   Our state-of-the-art facility designed for your corporate wellness needs
                 </p>
@@ -123,7 +122,7 @@ const Location = () => {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Get In <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Touch</span>
+              Get In Touch
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               We're here to help you with all your corporate wellness needs
@@ -202,8 +201,7 @@ const Location = () => {
             className="text-center mb-12"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Our <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Location</span>
-            </h2>
+              Our Location</h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Find us easily with the map below
             </p>
@@ -242,7 +240,7 @@ const Location = () => {
             className="text-center mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Trusted by <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Leading Companies</span>
+              Trusted by Leading Companies
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Hear what our corporate partners say about our wellness programs
