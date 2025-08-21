@@ -49,7 +49,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: 'Email',
-      info: 'corporate@leofit.com',
+      info: 'info@leofittglobal.com',
       subtitle: 'We reply within 24 hours'
     },
     {

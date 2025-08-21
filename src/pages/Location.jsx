@@ -162,7 +162,7 @@ const Location = () => {
                 </svg>
               </div>
               <h3 className="text-xl font-bold text-white text-center mb-2">Email</h3>
-              <p className="text-xl text-center text-white mb-2">corporate@leofit.com</p>
+              <p className="text-xl text-center text-white mb-2">info@leofittglobal.com</p>
               <p className="text-gray-400 text-center">We reply within 24 hours</p>
             </motion.div>
 

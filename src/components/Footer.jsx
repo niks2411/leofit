@@ -17,7 +17,7 @@ const Footer = () => {
 
   const contactInfo = [
     { icon: Phone, text: '+91 91662 45953' },
-    { icon: Mail, text: 'corporate@leofit.com' },
+    { icon: Mail, text: 'info@leofittglobal.com' },
     { icon: MapPin, text: '5N/44A, Bk Chowk, Block N, NIT 5, Near Btw, BK Chowk-121001' }
   ];
 
