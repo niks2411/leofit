@@ -116,7 +116,7 @@ const Admin = () => {
       {!authenticated ? (
         <div className="max-w-md mx-auto mt-20 p-8 bg-gray-800 rounded-lg shadow-lg">
           <div className="text-center mb-6">
-            <Lock className="w-12 h-12 mx-auto text-purple-500 mb-4" />
+            <Lock className="w-12 h-12 mx-auto text-red-600 mb-4" />
             <h2 className="text-2xl font-bold">Admin Login</h2>
             <p className="text-gray-400 mt-2">Enter your password to access the dashboard</p>
           </div>
@@ -139,7 +139,7 @@ const Admin = () => {
                 autoFocus
               />
             </div>
-            <button type="submit" className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded text-white">
+            <button type="submit" className="w-full px-4 py-2 bg-red-600 hover:bg-purple-700 rounded text-white">
               Login
             </button>
           </form>
@@ -184,7 +184,7 @@ const Admin = () => {
 
           {isLoading ? (
             <div className="flex justify-center items-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+              <Loader2 className="h-8 w-8 animate-spin text-red-600" />
             </div>
           ) : (
             <>
@@ -277,7 +277,7 @@ const Admin = () => {
                       return (
                         <button
                           key={pageNum}
-                          className={`px-4 py-2 rounded ${pageNum === currentPage ? 'bg-purple-600' : 'bg-gray-700'}`}
+                          className={`px-4 py-2 rounded ${pageNum === currentPage ? 'bg-red-600' : 'bg-gray-700'}`}
                           onClick={() => setCurrentPage(pageNum)}
                         >
                           {pageNum}

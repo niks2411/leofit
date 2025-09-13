@@ -164,7 +164,7 @@ const Contact = () => {
     <div className="min-h-screen pt-24 bg-gray-900">
       {/* Hero Section */}
       <section className="relative py-10 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-orange-500/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 via-red-500/10 to-orange-500/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -174,7 +174,7 @@ const Contact = () => {
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-white">
               Get In Touch{' '}
-              {/* <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              {/* <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                 Touch
               </span> */}
             </h1>
@@ -214,7 +214,7 @@ const Contact = () => {
                     animate={{ opacity: 1, y: 0, height: 'auto' }}
                     exit={{ opacity: 0, y: -20, height: 0 }}
                     transition={{ duration: 0.3 }}
-                    className="mb-6 p-4 bg-gray-700 rounded-lg border border-purple-500 relative"
+                    className="mb-6 p-4 bg-gray-700 rounded-lg border border-red-600 relative"
                   >
                     <button
                       onClick={removePackageSelection}
@@ -264,13 +264,13 @@ const Contact = () => {
                         id="name"
                         value={formData.name}
                         onChange={(e) => handleInputChange('name', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-red-600 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="name"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-red-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.name ? '-0.5rem' : '0.75rem',
                           fontSize: formData.name ? '0.875rem' : '1rem',
@@ -287,13 +287,13 @@ const Contact = () => {
                         id="email"
                         value={formData.email}
                         onChange={(e) => handleInputChange('email', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-red-600 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="email"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-red-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.email ? '-0.5rem' : '0.75rem',
                           fontSize: formData.email ? '0.875rem' : '1rem',
@@ -312,13 +312,13 @@ const Contact = () => {
                         id="company"
                         value={formData.company}
                         onChange={(e) => handleInputChange('company', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-red-600 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                         required
                       />
                       <label
                         htmlFor="company"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-red-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.company ? '-0.5rem' : '0.75rem',
                           fontSize: formData.company ? '0.875rem' : '1rem',
@@ -335,12 +335,12 @@ const Contact = () => {
                         id="phone"
                         value={formData.phone}
                         onChange={(e) => handleInputChange('phone', e.target.value)}
-                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-purple-500 focus:outline-none focus:scale-105 peer"
+                        className="w-full px-4 py-3 border-2 rounded-lg transition-all duration-300 bg-gray-700 border-gray-600 text-white focus:border-red-600 focus:outline-none focus:scale-105 peer"
                         placeholder=" "
                       />
                       <label
                         htmlFor="phone"
-                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-purple-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
+                        className="absolute left-4 transition-all duration-300 peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-focus:-top-2 peer-focus:text-sm peer-focus:text-red-600 peer-focus:scale-110 text-gray-400 bg-gray-700 px-2 rounded"
                         style={{
                           top: formData.phone ? '-0.5rem' : '0.75rem',
                           fontSize: formData.phone ? '0.875rem' : '1rem',
@@ -357,7 +357,7 @@ const Contact = () => {
                     disabled={isSubmitting || isSubmitted}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
+                    className="w-full py-4 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-red-600/25 transition-all duration-500 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                   >
                     {isSubmitting ? (
                       <>
@@ -401,7 +401,7 @@ const Contact = () => {
                       transition={{ duration: 0.3, delay: index * 0.1 }}
                       className="flex items-start space-x-4 p-4 rounded-lg hover:bg-gray-700 transition-colors duration-300"
                     >
-                      <div className="flex-shrink-0 p-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-lg">
+                      <div className="flex-shrink-0 p-3 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-lg">
                         <contact.icon className="w-6 h-6" />
                       </div>
                       <div>
@@ -435,7 +435,7 @@ const Contact = () => {
                       className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-700 transition-colors duration-300"
                     >
                       <div className="flex-shrink-0 p-2 bg-purple-100 rounded-lg">
-                        <feature.icon className="w-5 h-5 text-purple-600" />
+                        <feature.icon className="w-5 h-5 text-red-600" />
                       </div>
                       <div>
                         <h4 className="font-semibold text-white">

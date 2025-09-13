@@ -4,11 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, Heart, Users, TrendingUp, Shield, Zap, Award, X, Check } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import PaymentHold from './pages/PaymentHold';
+import { PAYMENT_HOLD_ENABLED } from './config';
 
 import About from './pages/About';
 import Contact from './pages/Contact';
 import Location from './pages/Location';
 import Admin from './pages/admin';
+import CorporateServices from './pages/CorporateServices';
+import IndividualServices from './pages/IndividualServices';
 
 // Create a context to share package selection across components
 export const PackageContext = React.createContext();
@@ -112,6 +116,15 @@ function App() {
   const [selectedAddOns, setSelectedAddOns] = useState([]);
   const [customSelections, setCustomSelections] = useState(null);
   const videoRef = useRef(null);
+  
+  // Global hold: show payment page only
+  if (PAYMENT_HOLD_ENABLED) {
+    return (
+      <Router>
+        <PaymentHold />
+      </Router>
+    );
+  }
   
   useEffect(() => {
     const hasSeenPopup = localStorage.getItem('hasSeenPopup');
@@ -352,6 +365,7 @@ function App() {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About' },
+    { label: 'Services' }, // This will be handled as a dropdown in Navbar
     { path: '/location', label: 'Location' },
     { path: '/contact', label: 'Contact' }
   ];
@@ -419,7 +433,7 @@ function App() {
       }}
     >
                         Empower Your Workforce with{' '}
-                        <span className="text-red-500">
+                        <span className="text-red-600">
   Corporate Wellness
 </span>
 
@@ -448,7 +462,7 @@ function App() {
         onClick={scrollToPackages}
         whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(147, 51, 234, 0.5)" }}
         whileTap={{ scale: 0.95 }}
-        className="group relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-purple-600 to-pink-600 rounded-full hover:shadow-2xl transition-all duration-500"
+        className="group relative px-8 py-4 text-lg font-semibold text-white bg-gradient-to-r from-red-600 to-red-500 rounded-full hover:shadow-2xl transition-all duration-500"
         style={{
           boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
           backdropFilter: 'blur(10px)'
@@ -490,7 +504,7 @@ function App() {
         className="text-3xl md:text-4xl font-bold mb-4 text-white"
       >
         <span>Corporate Wellness Packages</span>
-                        {/* <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        {/* <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                             Packages
                           </span> */}
       </motion.h2>
@@ -517,13 +531,13 @@ function App() {
           whileHover={{ y: -5 }}
         >
           {pkg.mostPopular && (
-            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs font-bold px-4 py-1 rounded-full z-10 shadow-md">
+            <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-red-600 to-red-500 text-white text-xs font-bold px-4 py-1 rounded-full z-10 shadow-md">
               MOST POPULAR
             </div>
           )}
-          <div className={`h-full bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-700 hover:border-purple-500/30 ${pkg.mostPopular ? 'ring-1 ring-purple-500' : ''}`}>
+          <div className={`h-full bg-gray-800 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-700 hover:border-red-600/30 ${pkg.mostPopular ? 'ring-1 ring-red-600' : ''}`}>
             <div className="p-6 h-full flex flex-col">
-              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full mb-4 shadow-md">
+              <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-red-600 to-red-500 rounded-full mb-4 shadow-md">
                 <pkg.icon className="w-5 h-5 text-white" />
               </div>
               
@@ -537,13 +551,13 @@ function App() {
               </div>
               
               <div className="mb-6 flex-grow">
-                <div className="h-px bg-gradient-to-r from-transparent via-purple-500/20 to-transparent my-3"></div>
+                <div className="h-px bg-gradient-to-r from-transparent via-red-600/20 to-transparent my-3"></div>
                 <h4 className="text-md font-semibold text-white mb-2">Includes:</h4>
                 <ul className="space-y-2">
                   {pkg.features.map((feature, i) => (
                     <li key={i} className="flex items-start">
                       <div className="flex-shrink-0 mt-0.5">
-                        <div className="w-4 h-4 rounded-full bg-purple-500/20 flex items-center justify-center">
+                        <div className="w-4 h-4 rounded-full bg-red-600/20 flex items-center justify-center">
                           <Check className="w-2.5 h-2.5 text-purple-400" />
                         </div>
                       </div>
@@ -558,7 +572,7 @@ function App() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 className={`mt-auto w-full py-2.5 text-white text-sm font-semibold rounded-lg transition-all duration-300 flex items-center justify-center space-x-2 ${pkg.mostPopular ? 
-                  'bg-gradient-to-r from-purple-500 to-pink-500 hover:shadow-purple-500/20 shadow-md' : 
+                  'bg-gradient-to-r from-red-600 to-red-500 hover:shadow-red-600/20 shadow-md' : 
                   'bg-gray-700 hover:bg-gray-600 border border-gray-600'}`}
               >
                 <span>Customize Package</span>
@@ -605,7 +619,7 @@ function App() {
                       >
                         <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
                           Transform Your Workplace With Wellness Benefits{' '}
-                          {/* <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          {/* <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                             Wellness Benefits
                           </span> */}
                         </h2>
@@ -631,14 +645,14 @@ function App() {
                               boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                             }}
                             transition={{ duration: 0.3, ease: "easeOut" }}
-                            className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-850 hover:from-gray-750 hover:to-gray-800 border border-gray-700 hover:border-purple-500/30 transition-all duration-500 overflow-hidden"
+                            className="group relative p-8 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-850 hover:from-gray-750 hover:to-gray-800 border border-gray-700 hover:border-red-600/30 transition-all duration-500 overflow-hidden"
                           >
                             {/* Gradient highlight on hover */}
-                            <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-pink-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 to-red-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                             
                             {/* Animated icon container */}
                             <motion.div 
-                              className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full mb-6 group-hover:rotate-[15deg] transition-transform duration-500"
+                              className="flex items-center justify-center w-16 h-16 bg-gradient-to-r from-red-600 to-red-500 rounded-full mb-6 group-hover:rotate-[15deg] transition-transform duration-500"
                               whileHover={{ scale: 1.1 }}
                             >
                               <benefit.icon className="w-8 h-8 text-white" />
@@ -668,7 +682,7 @@ function App() {
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                         viewport={{ once: true }}
-                        className="mt-16 bg-gradient-to-r from-purple-600/20 to-pink-600/20 rounded-xl p-6 border border-purple-500/20"
+                        className="mt-16 bg-gradient-to-r from-red-600/20 to-red-500/20 rounded-xl p-6 border border-red-600/20"
                       >
                         <div className="text-center">
                           <p className="text-lg text-purple-300 mb-2">
@@ -706,7 +720,7 @@ function App() {
                             viewport={{ once: true }}
                             className="p-6"
                           >
-                            <p className="text-4xl font-bold text-purple-400 mb-2">
+                            <p className="text-4xl font-bold text-white mb-2">
                               <AnimatedCounter value={stat.number} duration={2} />
                             </p>
                             <p className="text-lg text-gray-300">{stat.label}</p>
@@ -717,7 +731,7 @@ function App() {
                   </section>
 
                   {/* CTA Section */}
-                  <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600">
+                  <section className="py-20 bg-gradient-to-r from-gray-600 to-gray-800">
                     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                       <motion.div
                         initial={{ opacity: 0, y: 30 }}
@@ -735,7 +749,7 @@ function App() {
                           <motion.button
                             whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)" }}
                             whileTap={{ scale: 0.95 }}
-                            className="px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-full hover:shadow-2xl transition-all duration-500"
+                            className="px-8 py-4 text-lg font-semibold text-red-600 bg-white rounded-full hover:shadow-2xl transition-all duration-500"
                           >
                             Start Your Journey Today
                           </motion.button>
@@ -747,6 +761,8 @@ function App() {
               } />
               
               <Route path="/about" element={<About />} />
+              <Route path="/services/corporate" element={<CorporateServices />} />
+              <Route path="/services/individual" element={<IndividualServices />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/location" element={<Location />} />
               <Route path="/admin" element={<Admin />} />
@@ -795,7 +811,7 @@ function App() {
                               key={pkg.id}
                               whileHover={{ scale: 1.02 }}
                               whileTap={{ scale: 0.98 }}
-                              className="bg-gray-700 p-4 rounded-lg cursor-pointer border-2 border-gray-600 hover:border-purple-500 transition-colors"
+                              className="bg-gray-700 p-4 rounded-lg cursor-pointer border-2 border-gray-600 hover:border-red-600 transition-colors"
                               onClick={() => handleStartCustomization(pkg)}
                             >
                               <h4 className="text-lg font-bold text-white">{pkg.title}</h4>
@@ -835,13 +851,13 @@ function App() {
                             {addOnServices.map(addOn => (
                               <div 
                                 key={addOn.id}
-                                className={`p-4 rounded-lg border-2 transition-all duration-300 cursor-pointer hover:shadow-lg ${selectedAddOns.includes(addOn.id) ? 'border-purple-500 bg-gray-700 shadow-lg shadow-purple-500/20' : 'border-gray-700 hover:border-gray-600 hover:bg-gray-750'}`}
+                                className={`p-4 rounded-lg border-2 transition-all duration-300 cursor-pointer hover:shadow-lg ${selectedAddOns.includes(addOn.id) ? 'border-red-600 bg-gray-700 shadow-lg shadow-red-600/20' : 'border-gray-700 hover:border-gray-600 hover:bg-gray-750'}`}
                                 onClick={() => toggleAddOn(addOn.id)}
                               >
                                 <div className="flex justify-between items-start">
                                   <div className="flex items-start space-x-3">
                                     <div
-                                      className={`w-5 h-5 rounded flex items-center justify-center mt-1 flex-shrink-0 transition-colors ${selectedAddOns.includes(addOn.id) ? 'bg-purple-600' : 'border border-gray-500'}`}
+                                      className={`w-5 h-5 rounded flex items-center justify-center mt-1 flex-shrink-0 transition-colors ${selectedAddOns.includes(addOn.id) ? 'bg-red-600' : 'border border-gray-500'}`}
                                     >
                                       {selectedAddOns.includes(addOn.id) && <Check className="w-3 h-3 text-white" />}
                                     </div>
@@ -859,7 +875,7 @@ function App() {
                         <div className="flex flex-col sm:flex-row gap-4">
                           <Link
                             to="/contact"
-                            className="px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300 flex-1 text-center"
+                            className="px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 text-white font-semibold rounded-lg hover:shadow-lg hover:shadow-red-600/25 transition-all duration-300 flex-1 text-center"
                             onClick={() => {
                               saveCustomSelections();
                             }}
@@ -901,7 +917,7 @@ function App() {
                   
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center text-white font-bold">
+                      <div className="w-12 h-12 rounded-full bg-gradient-to-r from-red-600 to-red-500 flex items-center justify-center text-white font-bold">
                         R
                       </div>
                     </div>
@@ -915,7 +931,7 @@ function App() {
                       <div className="mt-3">
                         <button
                           onClick={() => setShowPopup(false)}
-                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 focus:outline-none"
+                          className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-full shadow-sm text-white bg-gradient-to-r from-red-600 to-red-500 hover:from-purple-700 hover:to-pink-700 focus:outline-none"
                         >
                           Got it!
                         </button>

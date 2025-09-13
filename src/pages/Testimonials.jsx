@@ -120,7 +120,7 @@ const Testimonials = () => {
     <div className="min-h-screen pt-24 bg-gray-900">
       {/* Hero Section */}
       <section className="relative py-20 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-orange-500/10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 via-red-500/10 to-orange-500/10"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -130,7 +130,7 @@ const Testimonials = () => {
           >
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               What Our{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                 Clients Say
               </span>
             </h1>
@@ -162,7 +162,7 @@ const Testimonials = () => {
                   initial={{ scale: 0 }}
                   whileInView={{ scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent mb-2"
+                  className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent mb-2"
                 >
                   {stat.number}
                 </motion.div>
@@ -195,7 +195,7 @@ const Testimonials = () => {
                       {/* Company Info */}
                       <div className="text-center lg:text-left">
                         <div className="relative mb-6">
-                          <div className="w-24 h-24 mx-auto lg:mx-0 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 p-1">
+                          <div className="w-24 h-24 mx-auto lg:mx-0 rounded-full overflow-hidden bg-gradient-to-br from-red-600 via-red-500 to-orange-500 p-1">
                             <img
                               src={testimonials[currentTestimonial].logo}
                               alt={testimonials[currentTestimonial].company}
@@ -203,14 +203,14 @@ const Testimonials = () => {
                             />
                           </div>
                           <div className="absolute -top-2 -right-2">
-                            <Quote className="w-6 h-6 text-purple-600" />
+                            <Quote className="w-6 h-6 text-red-600" />
                           </div>
                         </div>
                         
                         <h3 className="text-2xl font-bold text-white mb-2">
                           {testimonials[currentTestimonial].company}
                         </h3>
-                        <p className="text-purple-600 dark:text-purple-400 font-semibold mb-3">
+                        <p className="text-red-600 dark:text-purple-400 font-semibold mb-3">
                           {testimonials[currentTestimonial].industry}
                         </p>
                         
@@ -282,7 +282,7 @@ const Testimonials = () => {
                   onClick={() => goToTestimonial(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-500 ${
                     currentTestimonial === index
-                      ? 'bg-gradient-to-r from-purple-600 to-pink-600 w-8'
+                      ? 'bg-gradient-to-r from-red-600 to-red-500 w-8'
                       : 'bg-gray-600 hover:bg-gray-500'
                   }`}
                 />
@@ -304,7 +304,7 @@ const Testimonials = () => {
           >
             <h2 className="text-3xl font-bold mb-6 text-white">
               Trusted by Leading{' '}
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-red-600 to-red-500 bg-clip-text text-transparent">
                 Companies
               </span>
             </h2>
@@ -324,7 +324,7 @@ const Testimonials = () => {
                 whileHover={{ y: -10, scale: 1.05 }}
                 className="p-6 rounded-xl text-center hover:shadow-xl transition-all duration-500 bg-gray-700"
               >
-                <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-br from-purple-600 via-pink-500 to-orange-500 p-1">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full overflow-hidden bg-gradient-to-br from-red-600 via-red-500 to-orange-500 p-1">
                   <img
                     src={testimonial.logo}
                     alt={testimonial.company}
@@ -344,7 +344,7 @@ const Testimonials = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-600 to-pink-600">
+      <section className="py-20 bg-gradient-to-r from-red-600 to-red-500">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -362,7 +362,7 @@ const Testimonials = () => {
             <motion.button
               whileHover={{ scale: 1.05, boxShadow: "0 20px 40px rgba(0, 0, 0, 0.3)" }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-4 text-lg font-semibold text-purple-600 bg-white rounded-full hover:shadow-2xl transition-all duration-500"
+              className="px-8 py-4 text-lg font-semibold text-red-600 bg-white rounded-full hover:shadow-2xl transition-all duration-500"
             >
               Start Your Journey Today
             </motion.button>

@@ -33,7 +33,7 @@ const Footer = () => {
               transition={{ duration: 0.6 }}
               className="mb-6"
             >
-              <div className="text-2xl font-bold bg-gradient-to-r from-purple-600 via-pink-500 to-orange-500 bg-clip-text text-transparent mb-4">
+              <div className="text-2xl font-bold bg-gradient-to-r from-red-600 via-red-500 to-orange-500 bg-clip-text text-transparent mb-4">
                 Leofitt Global
               </div>
               <p className="text-gray-300 mb-6 max-w-md">
@@ -57,7 +57,7 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   whileHover={{ scale: 1.1, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="w-10 h-10 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-full flex items-center justify-center hover:shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+                  className="w-10 h-10 bg-gradient-to-r from-red-600 to-red-500 text-white rounded-full flex items-center justify-center hover:shadow-lg hover:shadow-red-600/25 transition-all duration-300"
                   style={{ transitionDelay: `${index * 100}ms` }}
                   aria-label={social.label}
                 >

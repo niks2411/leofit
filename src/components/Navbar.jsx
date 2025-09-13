@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 
 const Navbar = ({ navItems }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -69,27 +70,87 @@ const Navbar = ({ navItems }) => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`relative font-medium transition-all duration-300 hover:scale-105 ${
-                  location.pathname === item.path
-                    ? 'text-white'
-                    : 'text-gray-300 hover:text-white'
-                }`}
-              >
-                {item.label}
-                {location.pathname === item.path && (
-                  <motion.div
-                    layoutId="activeTab"
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-purple-600 to-pink-500"
-                    initial={false}
-                    transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                  />
-                )}
-              </Link>
-            ))}
+            {navItems.map((item) => {
+              if (item.label === 'Services') {
+                return (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setIsServicesDropdownOpen(true)}
+                    onMouseLeave={() => setIsServicesDropdownOpen(false)}
+                  >
+                    <button
+                      className={`relative font-medium transition-all duration-300 hover:scale-105 flex items-center ${
+                        location.pathname.includes('/services')
+                          ? 'text-white'
+                          : 'text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      {item.label}
+                      <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-200 ${
+                        isServicesDropdownOpen ? 'rotate-180' : ''
+                      }`} />
+                      {location.pathname.includes('/services') && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-600 to-red-500"
+                          initial={false}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </button>
+                    
+                    {/* Services Dropdown */}
+                    <AnimatePresence>
+                      {isServicesDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-full left-0 mt-2 w-48 bg-[#101828] border border-gray-700 rounded-lg shadow-xl overflow-hidden"
+                        >
+                          <Link
+                            to="/services/corporate"
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#1D2939] transition-colors duration-200"
+                          >
+                            Corporate Services
+                          </Link>
+                          <Link
+                            to="/services/individual"
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#1D2939] transition-colors duration-200"
+                          >
+                            Individual Services
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+              
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`relative font-medium transition-all duration-300 hover:scale-105 ${
+                    location.pathname === item.path
+                      ? 'text-white'
+                      : 'text-gray-300 hover:text-white'
+                  }`}
+                >
+                  {item.label}
+                  {location.pathname === item.path && (
+                    <motion.div
+                      layoutId="activeTab"
+                      className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-600 to-red-500"
+                      initial={false}
+                      transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Mobile menu button */}
@@ -114,28 +175,70 @@ const Navbar = ({ navItems }) => {
             className="md:hidden bg-[#101828] shadow-lg"
           >
             <div className="px-4 py-2 space-y-1">
-              {navItems.map((item, i) => (
-                <motion.div
-                  key={item.path}
-                  custom={i}
-                  variants={menuItemVariants}
-                  initial="closed"
-                  animate="open"
-                  exit="closed"
-                >
-                  <Link
-                    to={item.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`block px-3 py-2 rounded-lg transition-all duration-300 ${
-                      location.pathname === item.path
-                        ? 'text-white bg-[#1D2939]'
-                        : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
-                    }`}
+              {navItems.map((item, i) => {
+                if (item.label === 'Services') {
+                  return (
+                    <motion.div
+                      key={item.label}
+                      custom={i}
+                      variants={menuItemVariants}
+                      initial="closed"
+                      animate="open"
+                      exit="closed"
+                      className="space-y-1"
+                    >
+                      <div className="px-3 py-2 text-gray-300 font-medium">
+                        {item.label}
+                      </div>
+                      <Link
+                        to="/services/corporate"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block px-6 py-2 rounded-lg transition-all duration-300 ${
+                          location.pathname === '/services/corporate'
+                            ? 'text-white bg-[#1D2939]'
+                            : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
+                        }`}
+                      >
+                        Corporate Services
+                      </Link>
+                      <Link
+                        to="/services/individual"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block px-6 py-2 rounded-lg transition-all duration-300 ${
+                          location.pathname === '/services/individual'
+                            ? 'text-white bg-[#1D2939]'
+                            : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
+                        }`}
+                      >
+                        Individual Services
+                      </Link>
+                    </motion.div>
+                  );
+                }
+                
+                return (
+                  <motion.div
+                    key={item.path}
+                    custom={i}
+                    variants={menuItemVariants}
+                    initial="closed"
+                    animate="open"
+                    exit="closed"
                   >
-                    {item.label}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      to={item.path}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`block px-3 py-2 rounded-lg transition-all duration-300 ${
+                        location.pathname === item.path
+                          ? 'text-white bg-[#1D2939]'
+                          : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
+                      }`}
+                    >
+                      {item.label}
+                    </Link>
+                  </motion.div>
+                );
+              })}
             </div>
           </motion.div>
         )}
