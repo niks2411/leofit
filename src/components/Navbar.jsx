@@ -7,6 +7,7 @@ const Navbar = ({ navItems }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isServicesDropdownOpen, setIsServicesDropdownOpen] = useState(false);
+  const [isResourcesDropdownOpen, setIsResourcesDropdownOpen] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -129,6 +130,70 @@ const Navbar = ({ navItems }) => {
                 );
               }
               
+              if (item.label === 'Resources') {
+                return (
+                  <div
+                    key={item.label}
+                    className="relative"
+                    onMouseEnter={() => setIsResourcesDropdownOpen(true)}
+                    onMouseLeave={() => setIsResourcesDropdownOpen(false)}
+                  >
+                    <button
+                      className={`relative font-medium transition-all duration-300 hover:scale-105 flex items-center ${
+                        location.pathname.includes('/resources')
+                          ? 'text-white'
+                          : 'text-gray-300 hover:text-white'
+                      }`}
+                    >
+                      {item.label}
+                      <ChevronDown className={`ml-1 w-4 h-4 transition-transform duration-200 ${
+                        isResourcesDropdownOpen ? 'rotate-180' : ''
+                      }`} />
+                      {location.pathname.includes('/resources') && (
+                        <motion.div
+                          layoutId="activeTab"
+                          className="absolute -bottom-1 left-0 right-0 h-0.5 bg-gradient-to-r from-red-600 to-red-500"
+                          initial={false}
+                          transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                        />
+                      )}
+                    </button>
+                    
+                    {/* Resources Dropdown */}
+                    <AnimatePresence>
+                      {isResourcesDropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                          animate={{ opacity: 1, y: 0, scale: 1 }}
+                          exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                          transition={{ duration: 0.2 }}
+                          className="absolute top-full left-0 mt-2 w-48 bg-[#101828] border border-gray-700 rounded-lg shadow-xl overflow-hidden"
+                        >
+                          <Link
+                            to="/resources/case-studies"
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#1D2939] transition-colors duration-200"
+                          >
+                            Case Studies
+                          </Link>
+                          <Link
+                            to="/resources/webinars"
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#1D2939] transition-colors duration-200"
+                          >
+                            Webinars
+                          </Link>
+                          <Link
+                            to="/resources/blogs"
+                            className="block px-4 py-3 text-gray-300 hover:text-white hover:bg-[#1D2939] transition-colors duration-200"
+                          >
+                            Blogs
+                          </Link>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                );
+              }
+              
               return (
                 <Link
                   key={item.path}
@@ -211,6 +276,57 @@ const Navbar = ({ navItems }) => {
                         }`}
                       >
                         Individual Services
+                      </Link>
+                    </motion.div>
+                  );
+                }
+                
+                if (item.label === 'Resources') {
+                  return (
+                    <motion.div
+                      key={item.label}
+                      custom={i}
+                      variants={menuItemVariants}
+                      initial="closed"
+                      animate="open"
+                      exit="closed"
+                      className="space-y-1"
+                    >
+                      <div className="px-3 py-2 text-gray-300 font-medium">
+                        {item.label}
+                      </div>
+                      <Link
+                        to="/resources/case-studies"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block px-6 py-2 rounded-lg transition-all duration-300 ${
+                          location.pathname === '/resources/case-studies'
+                            ? 'text-white bg-[#1D2939]'
+                            : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
+                        }`}
+                      >
+                        Case Studies
+                      </Link>
+                      <Link
+                        to="/resources/webinars"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block px-6 py-2 rounded-lg transition-all duration-300 ${
+                          location.pathname === '/resources/webinars'
+                            ? 'text-white bg-[#1D2939]'
+                            : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
+                        }`}
+                      >
+                        Webinars
+                      </Link>
+                      <Link
+                        to="/resources/blogs"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className={`block px-6 py-2 rounded-lg transition-all duration-300 ${
+                          location.pathname === '/resources/blogs'
+                            ? 'text-white bg-[#1D2939]'
+                            : 'text-gray-300 hover:bg-[#1D2939] hover:text-white'
+                        }`}
+                      >
+                        Blogs
                       </Link>
                     </motion.div>
                   );

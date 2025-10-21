@@ -13,6 +13,9 @@ import Location from './pages/Location';
 import Admin from './pages/admin';
 import CorporateServices from './pages/CorporateServices';
 import IndividualServices from './pages/IndividualServices';
+import CaseStudies from './pages/CaseStudies';
+import Webinars from './pages/Webinars';
+import Blogs from './pages/Blogs';
 
 // Create a context to share package selection across components
 export const PackageContext = React.createContext();
@@ -366,6 +369,7 @@ function App() {
     { path: '/', label: 'Home' },
     { path: '/about', label: 'About' },
     { label: 'Services' }, // This will be handled as a dropdown in Navbar
+    { label: 'Resources' }, // This will be handled as a dropdown in Navbar
     { path: '/location', label: 'Location' },
     { path: '/contact', label: 'Contact' }
   ];
@@ -763,6 +767,9 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/services/corporate" element={<CorporateServices />} />
               <Route path="/services/individual" element={<IndividualServices />} />
+              <Route path="/resources/case-studies" element={<CaseStudies />} />
+              <Route path="/resources/webinars" element={<Webinars />} />
+              <Route path="/resources/blogs" element={<Blogs />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/location" element={<Location />} />
               <Route path="/admin" element={<Admin />} />
